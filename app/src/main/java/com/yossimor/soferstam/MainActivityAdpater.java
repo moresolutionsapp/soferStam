@@ -40,6 +40,8 @@ public class MainActivityAdpater extends RecyclerView.Adapter<MainActivityAdpate
         public TextView _id;
         public TextView parent_id;
         public TextView menu_desc;
+        public TextView child_is_files;
+
         private WeakReference<MainActivity.ClickListener> listenerRef;
 
 
@@ -47,12 +49,14 @@ public class MainActivityAdpater extends RecyclerView.Adapter<MainActivityAdpate
                                     TextView _id,
                                     TextView parent_id,
                                     TextView menu_desc,
+                                    TextView child_is_files,
                                     MainActivity.ClickListener listener
                                     ) {
             super(itemView);
             this._id = _id  ;
             this.parent_id = parent_id  ;
             this.menu_desc = menu_desc;
+            this.child_is_files = child_is_files;
             listenerRef = new WeakReference<>(listener);
             menu_desc.setOnClickListener(this);
 
@@ -75,10 +79,11 @@ public class MainActivityAdpater extends RecyclerView.Adapter<MainActivityAdpate
         TextView _id = v.findViewById(R.id._id);
         TextView parent_id = v.findViewById(R.id.parent_id);
         TextView menu_desc = v.findViewById(R.id.menu_desc);
+        TextView child_is_files = v.findViewById(R.id.child_is_files);
 
 
         MainActivityAdpater.MyViewHolder vh =
-                new MainActivityAdpater.MyViewHolder(v,_id,parent_id,menu_desc,listener);
+                new MainActivityAdpater.MyViewHolder(v,_id,parent_id,menu_desc,child_is_files,listener);
         return vh;
     }
 
@@ -95,6 +100,8 @@ public class MainActivityAdpater extends RecyclerView.Adapter<MainActivityAdpate
         cursor.moveToPosition(position);
         holder._id.setText(cursor.getString( cursor.getColumnIndex("_id")));
         holder.menu_desc.setText(cursor.getString( cursor.getColumnIndex("menu_desc")));
+        holder.parent_id.setText(cursor.getString( cursor.getColumnIndex("parent_id")));
+        holder.child_is_files.setText(cursor.getString( cursor.getColumnIndex("child_is_files")));
 
 
 
@@ -107,6 +114,8 @@ public class MainActivityAdpater extends RecyclerView.Adapter<MainActivityAdpate
 
         return cursor.getCount();
     }
+
+
 
 
 }

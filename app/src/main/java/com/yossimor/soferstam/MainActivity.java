@@ -17,6 +17,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
     int p_parent_id=0;
     String p_menuDesc="";
+    int child_is_files=0;
     private DBManager dbManager;
     private EditText etSearchbox;
     ActivityResultLauncher<Intent> editMenuActivityResultLauncher;
@@ -42,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         if (b != null) {
             p_parent_id = Integer.parseInt(b.getString("parent_id"));
             p_menuDesc = b.getString("menu_desc");
+            child_is_files = Integer.parseInt(b.getString("child_is_files"));
 
 
         }
@@ -131,7 +134,22 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = new MainActivityAdpater(cursor, new ClickListener() {
             @Override
             public void onPositionClicked(View view) {
+                Bundle b = new Bundle();
+                TextView tv = view.findViewById( R.id._id);
+                b.putString("parent_id",  tv.getText().toString());
+                tv = view.findViewById( R.id.menu_desc);
+                b.putString("menu_desc",  tv.getText().toString());
+                tv = view.findViewById( R.id.child_is_files);
+                b.putString("child_is_files",  tv.getText().toString());
+                Intent intent;
+                intent = new Intent(MainActivity.this, MainActivity.class);
+                intent.putExtras(b);
+                editMenuActivityResultLauncher.launch(intent);
 
+            }
+
+            @Override
+            public void onLongClicked(int position, View view) {
                 Bundle b = new Bundle();
                 TextView tv = view.findViewById( R.id._id);
                 b.putString("menu_id",  tv.getText().toString());
@@ -143,11 +161,6 @@ public class MainActivity extends AppCompatActivity {
                 intent = new Intent(MainActivity.this, EditMenu.class);
                 intent.putExtras(b);
                 editMenuActivityResultLauncher.launch(intent);
-            }
-
-            @Override
-            public void onLongClicked(int position, View view) {
-
             }
         });
 
@@ -164,5 +177,19 @@ public class MainActivity extends AppCompatActivity {
         void onPositionClicked(View view);
 
         void onLongClicked(int position,View view);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:{
+                finish();
+                return true;
+            }
+
+
+            default:
+                return false;
+        }
     }
 }

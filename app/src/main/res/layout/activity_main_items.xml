@@ -32,6 +32,14 @@
             android:layout_weight="70"
             android:textSize="@dimen/select_listview_Textsize"/>
 
+    <TextView
+        android:id="@+id/child_is_files"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_weight="70"
+        android:visibility="gone"/>
+
 
 
 </LinearLayout>

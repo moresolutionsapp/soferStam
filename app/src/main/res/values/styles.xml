@@ -1,0 +1,136 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/material_blue_grey_800</item>
+        <item name="android:actionButtonStyle">@style/MyActionButtonStyle</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:navigationBarColor">@android:color/white</item>
+        <item name="android:windowLightNavigationBar" tools:ignore="NewApi">true</item>
+
+    </style>
+
+
+
+
+    <style name="spinner_style">
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:dropDownWidth">533dp</item>
+        <item name="android:showDividers">none</item>
+        <item name="android:dividerHeight">0dp</item>
+        <item name="android:dropDownHeight">70dp</item>
+        <item name="android:scrollbarAlwaysDrawVerticalTrack">true</item>
+        <item name="android:dropDownSelector">@android:color/white</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="main_input_text">
+        <item name="android:keyTextSize">15sp</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="TextLabel" parent="TextAppearance.Design.Hint">
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="AppBaseTheme" parent="@style/Theme.AppCompat.Light">
+
+        <!-- customize the color palette -->
+        <item name="colorAccent">@color/colorPrimary</item>
+    </style>
+
+    <style name="MyActionButtonStyle" parent="AppBaseTheme">
+
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColorSecondary">@android:color/white</item>
+        <item name="android:background">@color/colorPrimaryDark</item>
+        <item name="android:colorBackground">@android:color/white</item>
+        <item name="android:textColor">@android:color/white</item>
+
+    </style>
+
+
+
+    <style name="helper_style" parent="TextAppearance.AppCompat.Small">
+        <item name="android:gravity">right</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_gravity">right</item>
+    </style>
+
+
+    <style name="Widget.Button.Toggle" parent="android:Widget">
+        <item name="android:background">@color/white</item>
+    </style>
+
+    <style name="toggleButton" >
+        <item name="android:buttonStyleToggle">@style/Widget.Button.Toggle</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+
+    <style name="SmallHint" parent="TextAppearance.Design.Hint">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.MyApp.Button.Rounded" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+        <item name="android:color">@color/white</item>
+    </style>
+
+    <style name="datepickerCustom" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:background">@color/white</item>
+        <!-- Ok Color-->
+        <item name="android:buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+        <!-- Cancel Color-->
+        <item name="android:buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+        <!-- Calender Number color arrow color (< >) -->
+        <item name="android:colorPrimaryDark">@color/black</item>
+        <!--day , month-->
+        <item name="android:textColorPrimaryInverse">@color/black</item>
+        <!-- year-->
+        <item name="android:textColorSecondaryInverse">@color/black</item>
+        <!--selected Item color-->
+        <item name="colorControlActivated">#2196F3</item>
+        <!-- Week TextColor-->
+        <item name="android:textColorSecondary">#E91E63</item>
+
+
+    </style>
+
+
+
+    <style name="NegativeButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="PositiveButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="ColorSwitchStyle">
+        <item name="colorControlActivated">@color/on</item>
+    </style>
+
+    <style name="Transparent" parent="android:Theme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+
+    <style name="BottomNavigationStyle">
+        <item name="android:gravity">center</item>
+        <item name="android:lines">2</item>
+    </style>
+
+
+</resources>

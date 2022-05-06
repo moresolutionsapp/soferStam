@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_weight="100"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <include
+                android:id="@+id/include"
+                layout="@layout/toolbar" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/etSearchbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/search_edittext"
+            android:drawableStart="@drawable/ic_search"
+            android:inputType="text"
+            android:ems="10"
+            android:focusable="true"
+            android:hint="חפש"
+            android:gravity="center"
+            android:importantForAutofill="no"/>
+
+
+
+
+
+        <LinearLayout
+            android:id="@+id/bottom_LinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="60dp">
+
+
+            <View
+                android:id="@+id/divider_top"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:background="@android:color/black"
+                />
+
+
+            <View
+                android:id="@+id/divider_header"
+                android:layout_height="1dp"
+                android:layout_width="match_parent"
+                android:background="@android:color/darker_gray"
+                />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/my_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                />
+            <View
+                android:id="@+id/divider_bottom"
+                android:layout_height="1dp"
+                android:layout_width="match_parent"
+                android:background="@android:color/black"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingAddButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        app:srcCompat="@drawable/ic_add_white_24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@color/white"
+        app:borderWidth="0dp"
+        app:fabSize="normal"
+        android:scaleType="center"
+        app:maxImageSize="56dp"
+        app:backgroundTint="@color/red"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="60dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        app:elevation="20dp"
+        android:layout_gravity="bottom|end"
+        app:layout_anchorGravity="bottom|right|end"
+        />
+
+
+
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

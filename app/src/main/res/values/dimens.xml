@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="Listview">16sp</dimen>
+    <dimen name="Button">15sp</dimen>
+    <dimen name="Edit">16sp</dimen>
+    <dimen name="Field_Title">16sp</dimen>
+    <dimen name="text_size">16sp</dimen>
+    <dimen name="Title_Material_Edit">15sp</dimen>
+    <dimen name="material_button">16sp</dimen>
+    <dimen name="Activity_Header">30sp</dimen>
+    <dimen name="select_listview_Textsize">18sp</dimen>
+    <dimen name="select_listview_Textsize_small">14sp</dimen>
+
+</resources>

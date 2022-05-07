@@ -35,12 +35,14 @@ public class MainActivityAdpater extends RecyclerView.Adapter<MainActivityAdpate
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
-    public static class MyViewHolder extends RecyclerView.ViewHolder  implements View.OnClickListener {
+    public static class MyViewHolder extends RecyclerView.ViewHolder
+            implements View.OnClickListener, View.OnLongClickListener {
         // each data item is just a string in this case
         public TextView _id;
         public TextView parent_id;
         public TextView menu_desc;
         public TextView child_is_files;
+
 
         private WeakReference<MainActivity.ClickListener> listenerRef;
 
@@ -58,7 +60,8 @@ public class MainActivityAdpater extends RecyclerView.Adapter<MainActivityAdpate
             this.menu_desc = menu_desc;
             this.child_is_files = child_is_files;
             listenerRef = new WeakReference<>(listener);
-            menu_desc.setOnClickListener(this);
+            itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
 
 
 
@@ -67,6 +70,12 @@ public class MainActivityAdpater extends RecyclerView.Adapter<MainActivityAdpate
         @Override
         public void onClick(View view) {
             listenerRef.get().onPositionClicked(itemView);
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            listenerRef.get().onLongClicked(getAdapterPosition(),itemView);
+            return true;
         }
     }
 

@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".LoadFile"
+            android:exported="false" />
+        <activity
             android:name=".EditMenu"
             android:exported="false" />
 

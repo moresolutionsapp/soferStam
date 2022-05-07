@@ -87,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
+
         dbManager = new DBManager(this);
         dbManager.open();
 
@@ -149,19 +150,39 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onLongClicked(int position, View view) {
+            public void onLongClicked(int position,View view) {
                 Bundle b = new Bundle();
                 TextView tv = view.findViewById( R.id._id);
-                b.putString("menu_id",  tv.getText().toString());
-                tv = view.findViewById( R.id.menu_desc);
-                b.putString("menu_desc",  tv.getText().toString());
-                tv = view.findViewById( R.id.parent_id);
-                b.putString("parent_id",  tv.getText().toString());
-                Intent intent;
-                intent = new Intent(MainActivity.this, EditMenu.class);
-                intent.putExtras(b);
-                editMenuActivityResultLauncher.launch(intent);
+                if (tv.getText().toString().trim().equals("1")){
+                    b.putString("menu_id",  tv.getText().toString());
+                    tv = view.findViewById( R.id._id);
+                    b.putString("menu_id",  tv.getText().toString());
+                    tv = view.findViewById( R.id.menu_desc);
+                    b.putString("menu_desc",  tv.getText().toString());
+                    tv = view.findViewById( R.id.parent_id);
+                    b.putString("parent_id",  tv.getText().toString());
+                    Intent intent;
+                    intent = new Intent(MainActivity.this, EditMenu.class);
+                    intent.putExtras(b);
+                    editMenuActivityResultLauncher.launch(intent);
+                }
+                else{
+                    b.putString("menu_id",  tv.getText().toString());
+                    tv = view.findViewById( R.id._id);
+                    b.putString("menu_id",  tv.getText().toString());
+                    tv = view.findViewById( R.id.menu_desc);
+                    b.putString("menu_desc",  tv.getText().toString());
+                    tv = view.findViewById( R.id.parent_id);
+                    b.putString("parent_id",  tv.getText().toString());
+                    Intent intent;
+                    intent = new Intent(MainActivity.this, EditMenu.class);
+                    intent.putExtras(b);
+                    editMenuActivityResultLauncher.launch(intent);
+                }
+
             }
+
+
         });
 
 

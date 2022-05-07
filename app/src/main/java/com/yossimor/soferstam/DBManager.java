@@ -77,5 +77,47 @@ public class DBManager {
     }
 
 
+    public Cursor fetch_files(int parent,CharSequence arg0) {
+        String[] selectionArgs;
+        selectionArgs = new String[] { Integer.toString(parent),"%" + arg0 + "%"};
+        String Select = "select *"+
+                " from files "+
+                " where parent_id = ? and" +
+                " file_name like ? " +
+                " order by _id,page_no";
+        Cursor cursor = database.rawQuery(Select,selectionArgs);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        return cursor;
+    }
+
+    public void files_insert_or_update (int _id,
+                                       int parent_id ,
+                                       String file_name,
+                                       int page_no) {
+
+        ContentValues contentValue = new ContentValues();
+        if (_id!=0){
+            contentValue.put(DatabaseHelper._id ,_id);
+        }
+        contentValue.put(DatabaseHelper.parent_id, parent_id);
+        contentValue.put(DatabaseHelper.menu_desc, file_name);
+        contentValue.put(DatabaseHelper.is_file, 1);
+        contentValue.put(DatabaseHelper.child_is_files, 0);
+        contentValue.put(DatabaseHelper.page_no, page_no);
+
+
+        if(_id==0 ){
+            database.insert(DatabaseHelper.menu, null, contentValue);
+        }
+        else{
+            String[] whereArgs = new String[] {Integer.toString(_id)};
+            database.update(DatabaseHelper.menu, contentValue,DatabaseHelper._id + "=?" ,whereArgs);
+        }
+
+    }
+
+
 
 }

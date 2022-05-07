@@ -9,7 +9,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Database Information
     static final String DB_NAME = "soferStam.DB";
     // database version
-    static final int DB_VERSION = 13;
+    static final int DB_VERSION = 14;
 
 
     // Table Name
@@ -19,6 +19,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String parent_id = "parent_id";
     public static final String menu_desc = "menu_desc";
     public static final String child_is_files = "child_is_files";
+    public static final String is_file = "is_files";
+    public static final String page_no = "child_is_files";
 
 
     // Creating table query
@@ -27,8 +29,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "(" + _id + " INTEGER PRIMARY KEY AUTOINCREMENT , "
                     + parent_id + " int , "
                     + menu_desc + " text ,"
-                    + child_is_files + " int " +
+                    + child_is_files + " int ,"
+                    + is_file + " int ,"
+                    + page_no + " int " +
                     ");";
+
+
 
 
     public DatabaseHelper(Context context) {

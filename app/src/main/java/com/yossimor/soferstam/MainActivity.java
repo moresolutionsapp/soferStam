@@ -80,7 +80,13 @@ public class MainActivity extends AppCompatActivity {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(final View v) {
                 Intent intent=null;
-                intent = new Intent(MainActivity.this, EditMenu.class);
+                if (child_is_files==1){
+                    intent = new Intent(MainActivity.this, LoadFile.class);
+                }
+                else{
+                    intent = new Intent(MainActivity.this, EditMenu.class);
+                }
+
                 editMenuActivityResultLauncher.launch(intent);
             }
 

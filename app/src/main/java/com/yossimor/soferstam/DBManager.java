@@ -76,6 +76,20 @@ public class DBManager {
 
     }
 
+    public boolean is_directory_choose() {
+        String Select = "select *"+
+                " from control "+
+                " where is_directory_choose = 1 ";
+
+        Cursor cursor = database.rawQuery(Select,null);
+        if (cursor.getCount() <= 0) {
+            cursor.close();
+            return false;
+        } else {
+            cursor.close();
+            return true;
+        }
+    }
 
     public Cursor fetch_files(int parent,CharSequence arg0) {
         String[] selectionArgs;
@@ -92,7 +106,27 @@ public class DBManager {
         return cursor;
     }
 
-    public void files_insert_or_update (int _id,
+    public void control_insert_is_direcotory_exist () {
+
+        ContentValues contentValue = new ContentValues();
+        contentValue.put(DatabaseHelper._id, 0);
+        contentValue.put(DatabaseHelper.is_directory_choose, 1);
+
+
+        String Query = "Select _id from control";
+        Cursor cursor = database.rawQuery(Query, null);
+        if (cursor.getCount() <= 0) {
+            cursor.close();
+            database.insert(DatabaseHelper.control, null, contentValue);
+        } else {
+            database.update(DatabaseHelper.control, contentValue, DatabaseHelper._id + "=0", null);
+        }
+    }
+
+
+
+
+        public void files_insert_or_update (int _id,
                                        int parent_id ,
                                        String file_name,
                                        int page_no) {

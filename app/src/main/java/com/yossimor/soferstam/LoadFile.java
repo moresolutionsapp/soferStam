@@ -1,13 +1,18 @@
 package com.yossimor.soferstam;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,11 +34,58 @@ public class LoadFile extends AppCompatActivity {
     int p_file_id;
     int p_parent_id;
     int p_page_no;
+    ActivityResultLauncher<Intent> browseFilesResultLauncher;
+    ActivityResultLauncher<Intent> chooseDirectoryFilesResultLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_load_file);
+
+
+        chooseDirectoryFilesResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            DBManager dbManager = new DBManager(LoadFile.this);
+                            dbManager.open();
+                            dbManager.control_insert_is_direcotory_exist();
+                            dbManager.close();
+                        }
+                    }
+                });
+
+        browseFilesResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            Intent data = result.getData();
+                            //int tt = data.getIntExtra("detect_result", 99);
+                            //showFileChooser(etSearchbox.getText());
+
+                        }
+                    }
+                });
+
+        Button button = findViewById(R.id.choose_directory);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(final View v) {
+                openDirectory();
+            }
+        });
+
+        DBManager dbManager = new DBManager(LoadFile.this);
+        dbManager.open();
+        if (!dbManager.is_directory_choose()){
+            openDirectory();
+        }
+        dbManager.close();
+
+
 
         et_fileName = findViewById(R.id.fileName);
         et_fileNameLayout = findViewById(R.id.fileNameLayout);
@@ -138,5 +190,27 @@ public class LoadFile extends AppCompatActivity {
         finish();
 
     }
+
+    private void showFileChooser() {
+
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        browseFilesResultLauncher.launch(intent);
+
+    }
+
+    //public void openDirectory(Uri uriToLoad) {
+    public void openDirectory() {
+        // Choose a directory using the system's file picker.
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+
+        // Optionally, specify a URI for the directory that should be opened in
+        // the system file picker when it loads.
+        intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI,false);
+
+        chooseDirectoryFilesResultLauncher.launch(intent);
+    }
+
+
 
 }

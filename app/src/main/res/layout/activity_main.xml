@@ -111,6 +111,24 @@
         />
 
 
+    <LinearLayout
+        android:id="@+id/linearLayout_BottomNavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="bottom">
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNavigationView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:labelVisibilityMode="labeled"
+            app:menu="@menu/load"
+            android:layout_gravity="bottom"
+            android:background="@color/white"
+            app:showAsAction="withText"
+            app:itemTextColor="@color/black"
+            app:itemIconTint="@color/black" />
+    </LinearLayout>
 
 
 

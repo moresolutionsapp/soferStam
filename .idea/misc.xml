@@ -3,11 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/yossi/AndroidStudioProjects/SoferStam/app/src/main/res/drawable/ic_copy_24.xml" value="0.196" />
+        <entry key="..\:/Users/yossi/AndroidStudioProjects/SoferStam/app/src/main/res/layout/activity_copy_files.xml" value="0.18297101449275363" />
         <entry key="..\:/Users/yossi/AndroidStudioProjects/SoferStam/app/src/main/res/layout/activity_edit_menu.xml" value="0.10104166666666667" />
         <entry key="..\:/Users/yossi/AndroidStudioProjects/SoferStam/app/src/main/res/layout/activity_load_file.xml" value="0.18297101449275363" />
         <entry key="..\:/Users/yossi/AndroidStudioProjects/SoferStam/app/src/main/res/layout/activity_main.xml" value="0.18297101449275363" />
         <entry key="..\:/Users/yossi/AndroidStudioProjects/SoferStam/app/src/main/res/layout/activity_main_items.xml" value="0.18297101449275363" />
         <entry key="..\:/Users/yossi/AndroidStudioProjects/SoferStam/app/src/main/res/layout/toolbar.xml" value="0.18297101449275363" />
+        <entry key="..\:/Users/yossi/AndroidStudioProjects/SoferStam/app/src/main/res/menu/load.xml" value="0.24270833333333333" />
       </map>
     </option>
   </component>

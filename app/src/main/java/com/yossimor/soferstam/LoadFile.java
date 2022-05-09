@@ -6,8 +6,11 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.documentfile.provider.DocumentFile;
+
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.view.MenuItem;
@@ -20,6 +23,11 @@ import android.widget.Toast;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Objects;
 
 public class LoadFile extends AppCompatActivity {
@@ -49,9 +57,14 @@ public class LoadFile extends AppCompatActivity {
                     @Override
                     public void onActivityResult(ActivityResult result) {
                         if (result.getResultCode() == Activity.RESULT_OK) {
+                            Intent data = result.getData();
+                            Uri uri = null;
+                            uri = data.getData();
+                            uri.toString();
+                            //Uri.parse("http://stackoverflow.com");
                             DBManager dbManager = new DBManager(LoadFile.this);
                             dbManager.open();
-                            dbManager.control_insert_is_direcotory_exist();
+                            dbManager.control_insert_is_direcotory_exist(uri.toString());
                             dbManager.close();
                         }
                     }
@@ -64,8 +77,12 @@ public class LoadFile extends AppCompatActivity {
                     public void onActivityResult(ActivityResult result) {
                         if (result.getResultCode() == Activity.RESULT_OK) {
                             Intent data = result.getData();
-                            //int tt = data.getIntExtra("detect_result", 99);
-                            //showFileChooser(etSearchbox.getText());
+                            Uri uri = null;
+                            uri = data.getData();
+
+                                // Perform operations on the document using its URI.
+
+
 
                         }
                     }
@@ -80,7 +97,7 @@ public class LoadFile extends AppCompatActivity {
 
         DBManager dbManager = new DBManager(LoadFile.this);
         dbManager.open();
-        if (!dbManager.is_directory_choose()){
+        if (!dbManager.is_directory_choose().trim().equals("")){
             openDirectory();
         }
         dbManager.close();
@@ -88,6 +105,12 @@ public class LoadFile extends AppCompatActivity {
 
 
         et_fileName = findViewById(R.id.fileName);
+        et_fileName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showFileChooser();
+            }
+        });
         et_fileNameLayout = findViewById(R.id.fileNameLayout);
         et_pageNo = findViewById(R.id.pageNo);
         et_pageNoLayout = findViewById(R.id.pageNoLayout);
@@ -116,9 +139,12 @@ public class LoadFile extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.my_toolbar);
         TextView mTitle = toolbar.findViewById(R.id.toolbar_title);
         setSupportActionBar(toolbar);
-        mTitle.setText("עריכת תפריט");
+        mTitle.setText("טעינת קובץ");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // enable the back button
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+
+
 
 
         ImageView save_button;
@@ -210,6 +236,8 @@ public class LoadFile extends AppCompatActivity {
 
         chooseDirectoryFilesResultLauncher.launch(intent);
     }
+
+
 
 
 

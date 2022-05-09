@@ -1,9 +1,8 @@
 package com.yossimor.soferstam;;
 
-import static androidx.core.app.ActivityCompat.startActivityForResult;
+
 
 import android.content.Context;
-import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -12,19 +11,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Database Information
     static final String DB_NAME = "soferStam.DB";
     // database version
-    static final int DB_VERSION = 16;
+    static final int DB_VERSION = 17;
 
     // Table Name
     public static final String control = "control";
     // Table columns
     public static final String _id = "_id";
     public static final String is_directory_choose = "is_directory_choose";
+    public static final String uri_path = "uri_path";
 
 
     // Creating table query
     private static final String CREATE_TABLE_control =
             "create table IF NOT EXISTS " + control +
                     "(" + _id + " INTEGER PRIMARY KEY AUTOINCREMENT , "
+                    + uri_path + " text ,"
                     + is_directory_choose + " int " +
                     ");";
 

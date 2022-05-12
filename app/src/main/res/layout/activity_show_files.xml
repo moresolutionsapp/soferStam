@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    android:weightSum="100"
+    tools:context=".ShowFiles">
+
+    <include
+        android:id="@+id/include"
+        layout="@layout/toolbar" />
+
+
+
+    <com.yossimor.soferstam.CustomViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="90">
+    </com.yossimor.soferstam.CustomViewPager>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_weight="10"
+        app:tabGravity="center"
+        app:tabIndicatorHeight="0dp"/>
+
+
+
+</LinearLayout>

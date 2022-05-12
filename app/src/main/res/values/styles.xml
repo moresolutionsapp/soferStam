@@ -15,8 +15,6 @@
     </style>
 
 
-
-
     <style name="spinner_style">
         <item name="android:paddingLeft">0dp</item>
         <item name="android:dropDownWidth">533dp</item>
@@ -54,7 +52,6 @@
     </style>
 
 
-
     <style name="helper_style" parent="TextAppearance.AppCompat.Small">
         <item name="android:gravity">right</item>
         <item name="android:textSize">13sp</item>
@@ -67,7 +64,7 @@
         <item name="android:background">@color/white</item>
     </style>
 
-    <style name="toggleButton" >
+    <style name="toggleButton">
         <item name="android:buttonStyleToggle">@style/Widget.Button.Toggle</item>
         <item name="android:textColor">@color/white</item>
     </style>
@@ -104,7 +101,6 @@
     </style>
 
 
-
     <style name="NegativeButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
         <item name="android:textColor">@color/black</item>
     </style>
@@ -130,6 +126,11 @@
     <style name="BottomNavigationStyle">
         <item name="android:gravity">center</item>
         <item name="android:lines">2</item>
+    </style>
+
+    <style name="Widget.AppTheme.ButtonBar.Fullscreen" parent="">
+        <item name="android:background">@color/black_overlay</item>
+        <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>
     </style>
 
 

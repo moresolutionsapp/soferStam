@@ -6,8 +6,10 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.FileProvider;
 import androidx.documentfile.provider.DocumentFile;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -43,7 +45,7 @@ public class LoadFile extends AppCompatActivity {
     int p_parent_id;
     int p_page_no;
     ActivityResultLauncher<Intent> browseFilesResultLauncher;
-    ActivityResultLauncher<Intent> chooseDirectoryFilesResultLauncher;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,24 +53,7 @@ public class LoadFile extends AppCompatActivity {
         setContentView(R.layout.activity_load_file);
 
 
-        chooseDirectoryFilesResultLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode() == Activity.RESULT_OK) {
-                            Intent data = result.getData();
-                            Uri uri = null;
-                            uri = data.getData();
-                            uri.toString();
-                            //Uri.parse("http://stackoverflow.com");
-                            DBManager dbManager = new DBManager(LoadFile.this);
-                            dbManager.open();
-                            dbManager.control_insert_is_direcotory_exist(uri.toString());
-                            dbManager.close();
-                        }
-                    }
-                });
+
 
         browseFilesResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -88,19 +73,7 @@ public class LoadFile extends AppCompatActivity {
                     }
                 });
 
-        Button button = findViewById(R.id.choose_directory);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(final View v) {
-                openDirectory();
-            }
-        });
 
-        DBManager dbManager = new DBManager(LoadFile.this);
-        dbManager.open();
-        if (!dbManager.is_directory_choose().trim().equals("")){
-            openDirectory();
-        }
-        dbManager.close();
 
 
 
@@ -219,23 +192,16 @@ public class LoadFile extends AppCompatActivity {
 
     private void showFileChooser() {
 
+//        Intent intent = new Intent(Intent.ACTION_VIEW);
+        File[] dirs = this.getExternalFilesDirs(null);
+        Uri mydir = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".provider", dirs[0]);
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("*/*");
+        intent.setType("*.htm");
         browseFilesResultLauncher.launch(intent);
 
     }
 
-    //public void openDirectory(Uri uriToLoad) {
-    public void openDirectory() {
-        // Choose a directory using the system's file picker.
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
 
-        // Optionally, specify a URI for the directory that should be opened in
-        // the system file picker when it loads.
-        intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI,false);
-
-        chooseDirectoryFilesResultLauncher.launch(intent);
-    }
 
 
 

@@ -41,12 +41,6 @@ public class CopyFiles extends AppCompatActivity {
                             Intent data = result.getData();
                             Uri uri = null;
                             uri = data.getData();
-                            uri.toString();
-                            //Uri.parse("http://stackoverflow.com");
-                            DBManager dbManager = new DBManager(CopyFiles.this);
-                            dbManager.open();
-                            dbManager.control_insert_is_direcotory_exist(uri.toString());
-                            dbManager.close();
                             read_uri(uri);
                         }
                     }
@@ -57,22 +51,14 @@ public class CopyFiles extends AppCompatActivity {
         copy_files.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                DBManager dbManager = new DBManager(CopyFiles.this);
-                dbManager.open();
-                String uri_path = dbManager.is_directory_choose();
-                if (!uri_path.trim().equals("")){
-                    openDirectory();
-                }
-                read_uri(Uri.parse(uri_path));
-
-
+                openDirectory();
             }
         });
 
     }
 
     private void read_uri(Uri uri) {
+        create_dir("html");
         ProgressBar pb = findViewById(R.id.pb);
         pb.setVisibility(View.VISIBLE);
         Uri dirUri = uri;
@@ -90,16 +76,16 @@ public class CopyFiles extends AppCompatActivity {
                 DocumentFile file_or_directory = files[i];
                 if (file_or_directory.isDirectory() && !errorFound) {
                     String direcotory_name = file_or_directory.getName();
-                    create_dir(direcotory_name);
+                    create_dir("html/"+direcotory_name);
                     DocumentFile[] direcoty_files = file_or_directory.listFiles();
 
                     for (DocumentFile file : direcoty_files) {
-                        copyFile(file);
+                        copyFile(direcotory_name,file);
                     }
 
                 }
                 else{
-                    copyFile (file_or_directory);
+                    copyFile ("",file_or_directory);
                 }
             }
         }
@@ -108,7 +94,7 @@ public class CopyFiles extends AppCompatActivity {
 
     private void create_dir(String new_dir) {
         File[] dirs = this.getExternalFilesDirs(null);
-        File _dir = new File(dirs[0] + new_dir);
+        File _dir = new File(dirs[0] +"/"+ new_dir);
         if (!_dir.exists())
             _dir.mkdirs();
 //        File emp_dir = new File(dirs[0] + "/images/" +new_dir + "/");
@@ -116,7 +102,7 @@ public class CopyFiles extends AppCompatActivity {
     }
 
 
-    private void copyFile(DocumentFile inputFile) {
+    private void copyFile(String directory,DocumentFile inputFile) {
         InputStream in = null;
         OutputStream out = null;
         String error = null;
@@ -124,7 +110,7 @@ public class CopyFiles extends AppCompatActivity {
 
         try {
             File[] dirs = this.getExternalFilesDirs(null);
-            File file = new File(dirs[0] ,inputFile.getName());
+            File file = new File(dirs[0] +"/html/" +directory,inputFile.getName());
             out = new FileOutputStream(file);
             in = new FileInputStream(
                     getContentResolver().openFileDescriptor(inputFile.getUri(), "r").getFileDescriptor());

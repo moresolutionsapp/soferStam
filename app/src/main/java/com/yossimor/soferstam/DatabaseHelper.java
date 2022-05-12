@@ -11,23 +11,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Database Information
     static final String DB_NAME = "soferStam.DB";
     // database version
-    static final int DB_VERSION = 17;
-
-    // Table Name
-    public static final String control = "control";
-    // Table columns
-    public static final String _id = "_id";
-    public static final String is_directory_choose = "is_directory_choose";
-    public static final String uri_path = "uri_path";
+    static final int DB_VERSION = 18;
 
 
-    // Creating table query
-    private static final String CREATE_TABLE_control =
-            "create table IF NOT EXISTS " + control +
-                    "(" + _id + " INTEGER PRIMARY KEY AUTOINCREMENT , "
-                    + uri_path + " text ,"
-                    + is_directory_choose + " int " +
-                    ");";
+
 
 
 
@@ -35,7 +22,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Table Name
     public static final String menu = "menu";
     // Table columns
-    public static final String __id = "_id";
+    public static final String _id = "_id";
     public static final String parent_id = "parent_id";
     public static final String menu_desc = "menu_desc";
     public static final String child_is_files = "child_is_files";
@@ -64,7 +51,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TABLE_menu);
-        db.execSQL(CREATE_TABLE_control);
+
 
 
     }
@@ -73,7 +60,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("drop table menu");
         db.execSQL(CREATE_TABLE_menu);
-        db.execSQL(CREATE_TABLE_control);
+
 
 
 

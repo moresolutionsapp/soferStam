@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.LauncherActivity;
 import android.content.Intent;
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     int p_parent_id=0;
     String p_menuDesc="";
-    int child_is_files=0;
+    boolean child_is_files=false;
     private DBManager dbManager;
     private EditText etSearchbox;
     ActivityResultLauncher<Intent> editMenuActivityResultLauncher;
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         if (b != null) {
             p_parent_id = Integer.parseInt(b.getString("parent_id"));
             p_menuDesc = b.getString("menu_desc");
-            child_is_files = Integer.parseInt(b.getString("child_is_files"));
+            child_is_files = b.getBoolean("child_is_files");
 
 
         }
@@ -82,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(final View v) {
                 Intent intent=null;
-                if (child_is_files==1){
+                if (child_is_files){
                     intent = new Intent(MainActivity.this, LoadFile.class);
                 }
                 else{
@@ -166,8 +167,6 @@ public class MainActivity extends AppCompatActivity {
                 b.putString("parent_id",  tv.getText().toString());
                 tv = view.findViewById( R.id.menu_desc);
                 b.putString("menu_desc",  tv.getText().toString());
-                tv = view.findViewById( R.id.child_is_files);
-                b.putString("child_is_files",  tv.getText().toString());
                 Intent intent;
                 intent = new Intent(MainActivity.this, MainActivity.class);
                 intent.putExtras(b);
@@ -178,22 +177,21 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onLongClicked(int position,View view) {
                 Bundle b = new Bundle();
-                TextView tv = view.findViewById( R.id._id);
-                if (tv.getText().toString().trim().equals("1")){
-                    b.putString("menu_id",  tv.getText().toString());
+                TextView tv ;
+                cursor.moveToPosition(position);
+                @SuppressLint("Range")
+                int child_is_files = cursor.getInt( cursor.getColumnIndex("child_is_files"));
+                if (child_is_files==1){
                     tv = view.findViewById( R.id._id);
-                    b.putString("menu_id",  tv.getText().toString());
+                    b.putString("parent_id",  tv.getText().toString());
                     tv = view.findViewById( R.id.menu_desc);
                     b.putString("menu_desc",  tv.getText().toString());
-                    tv = view.findViewById( R.id.parent_id);
-                    b.putString("parent_id",  tv.getText().toString());
-                    Intent intent;
-                    intent = new Intent(MainActivity.this, EditMenu.class);
+                    b.putBoolean("child_is_files",  true);                  Intent intent;
+                    intent = new Intent(MainActivity.this, MainActivity.class);
                     intent.putExtras(b);
                     editMenuActivityResultLauncher.launch(intent);
                 }
                 else{
-                    b.putString("menu_id",  tv.getText().toString());
                     tv = view.findViewById( R.id._id);
                     b.putString("menu_id",  tv.getText().toString());
                     tv = view.findViewById( R.id.menu_desc);

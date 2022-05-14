@@ -15,6 +15,7 @@ import android.provider.DocumentsContract;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -58,6 +59,10 @@ public class CopyFiles extends AppCompatActivity {
     }
 
     private void read_uri(Uri uri) {
+        DBManager dbManager = new DBManager(this);
+        dbManager.open();
+        dbManager.files_list_delete_all();
+        int files_counter=0;
         create_dir("html");
         ProgressBar pb = findViewById(R.id.pb);
         pb.setVisibility(View.VISIBLE);
@@ -80,15 +85,20 @@ public class CopyFiles extends AppCompatActivity {
                     DocumentFile[] direcoty_files = file_or_directory.listFiles();
 
                     for (DocumentFile file : direcoty_files) {
+                        ++files_counter;
                         copyFile(direcotory_name,file);
                     }
 
                 }
                 else{
+                    ++files_counter;
                     copyFile ("",file_or_directory);
+                    dbManager.files_list_insert(file_or_directory.getName());
                 }
             }
         }
+        TextView files_counter_tv = findViewById(R.id.files_counter_text);
+        files_counter_tv.setText("מספר הקבצים שהועתקו: " + files_counter);
         pb.setVisibility(View.INVISIBLE);
     }
 

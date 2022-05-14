@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_weight="100"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <include
+                android:id="@+id/include"
+                layout="@layout/toolbar" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/etSearchbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/search_edittext"
+            android:drawableStart="@drawable/ic_search"
+            android:inputType="text"
+            android:ems="10"
+            android:focusable="true"
+            android:hint="חפש"
+            android:gravity="center"
+            android:importantForAutofill="no"/>
+
+
+
+
+
+        <LinearLayout
+            android:id="@+id/bottom_LinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="60dp">
+
+
+            <View
+                android:id="@+id/divider_top"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:background="@android:color/black"
+                />
+
+
+            <View
+                android:id="@+id/divider_header"
+                android:layout_height="1dp"
+                android:layout_width="match_parent"
+                android:background="@android:color/darker_gray"
+                />
+
+            <ListView
+                android:id="@+id/selectListView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="start"
+                android:layout_weight="1"
+                android:animationCache="false"
+                android:clickable="true"
+                android:divider="@color/ListDivider"
+                android:dividerHeight="1sp"
+                android:textDirection="ltr"
+                android:focusable="true"
+                android:longClickable="true"
+                android:minHeight="750dp"
+                android:scrollingCache="false"
+                android:smoothScrollbar="true"/>
+            <View
+                android:id="@+id/divider_bottom"
+                android:layout_height="1dp"
+                android:layout_width="match_parent"
+                android:background="@android:color/black"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+
+
+
+
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

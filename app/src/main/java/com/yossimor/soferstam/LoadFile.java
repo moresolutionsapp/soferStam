@@ -192,11 +192,8 @@ public class LoadFile extends AppCompatActivity {
 
     private void showFileChooser() {
 
-//        Intent intent = new Intent(Intent.ACTION_VIEW);
-        File[] dirs = this.getExternalFilesDirs(null);
-        Uri mydir = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".provider", dirs[0]);
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("*.htm");
+        Intent intent=null;
+        intent = new Intent(this, FilesList.class);
         browseFilesResultLauncher.launch(intent);
 
     }

@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".FilesList"
+            android:exported="false" />
+        <activity
             android:name=".ShowFiles"
             android:exported="false" />
         <activity

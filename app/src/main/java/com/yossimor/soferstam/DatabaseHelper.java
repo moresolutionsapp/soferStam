@@ -11,7 +11,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Database Information
     static final String DB_NAME = "soferStam.DB";
     // database version
-    static final int DB_VERSION = 18;
+    static final int DB_VERSION = 19;
 
 
 
@@ -42,6 +42,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     ");";
 
 
+    // Table Name
+    public static final String files_list = "files_list";
+    // Table columns
+    public static final String __id = "_id";
+    public static final String file_name = "file_name";
+
+
+
+    // Creating table query
+    private static final String CREATE_TABLE_files_list =
+            "create table IF NOT EXISTS " + files_list +
+                    "(" + _id + " INTEGER PRIMARY KEY AUTOINCREMENT , "
+                    + file_name + " int  " +
+                    ");";
+
 
 
     public DatabaseHelper(Context context) {
@@ -51,18 +66,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TABLE_menu);
-
-
+        db.execSQL(CREATE_TABLE_files_list);
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("drop table menu");
+        //db.execSQL("drop table menu");
         db.execSQL(CREATE_TABLE_menu);
-
-
-
+        db.execSQL(CREATE_TABLE_files_list);
 
     }
 

@@ -1,4 +1,4 @@
-package com.yossimor.soferstam;;
+package com.yossimor.soferstam;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -73,6 +73,32 @@ public class DBManager {
             String[] whereArgs = new String[] {Integer.toString(_id)};
             database.update(DatabaseHelper.menu, contentValue,DatabaseHelper._id + "=?" ,whereArgs);
         }
+
+    }
+
+    public Cursor fetch_files_list() {
+        String Select = "select *"+
+                " from files_list ";
+        Cursor cursor = database.rawQuery(Select,null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        return cursor;
+    }
+
+    public void files_list_insert (String file_name) {
+
+        ContentValues contentValue = new ContentValues();
+        contentValue.put(DatabaseHelper.file_name, file_name);
+        database.insert(DatabaseHelper.files_list, null, contentValue);
+
+
+    }
+
+    public void files_list_delete_all () {
+
+        database.delete(DatabaseHelper.files_list,null,null);
+
 
     }
 

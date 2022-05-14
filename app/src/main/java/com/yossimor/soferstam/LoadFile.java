@@ -62,12 +62,8 @@ public class LoadFile extends AppCompatActivity {
                     public void onActivityResult(ActivityResult result) {
                         if (result.getResultCode() == Activity.RESULT_OK) {
                             Intent data = result.getData();
-                            Uri uri = null;
-                            uri = data.getData();
-
-                                // Perform operations on the document using its URI.
-
-
+                            String file_name = data.getStringExtra("file_name");
+                            et_fileName.setText(file_name);
 
                         }
                     }
@@ -91,20 +87,22 @@ public class LoadFile extends AppCompatActivity {
 
         Bundle b = getIntent().getExtras();
         if (b != null) {
-            p_file_id = Integer.parseInt(b.getString("file_id"));
+            if (b.getString("file_id")!=null){
+                p_file_id = Integer.parseInt(b.getString("file_id"));
+            }
+            else
+            {
+                p_file_id = 0;
+            }
+            p_parent_id = Integer.parseInt(b.getString("parent_id"));
             p_fileName = b.getString("file_name");
             et_fileName.setText(p_fileName);
-            p_page_no = Integer.parseInt(b.getString("page_no"));
-            if (!b.getString("page_no").trim().equals("")) {
+            if (b.getString("page_no")!=null && !b.getString("page_no").trim().equals("") ){
+                p_page_no = Integer.parseInt(b.getString("page_no"));
                 et_pageNo.setText(p_page_no);
-                et_fileName.setText(p_fileName);
             }
-            if (b.getString("parent_id").trim().equals("")){
-                p_parent_id=0;
-            }
-            else{
-                p_parent_id = Integer.parseInt(b.getString("parent_id"));
-            }
+            et_fileName.setText(p_fileName);
+
 
 
         }

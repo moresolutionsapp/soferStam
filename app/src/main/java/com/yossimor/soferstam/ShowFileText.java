@@ -16,18 +16,33 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.webkit.WebView;
 
 import com.yossimor.soferstam.databinding.FragmentShowFileTextBinding;
+
+import java.io.File;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
 public class ShowFileText extends Fragment {
+
+    private String file_name;
+
+    public static ShowFileText newInstance(String file_name) {
+        ShowFileText fragment = new ShowFileText();
+        Bundle args = new Bundle();
+        args.putString("file_name", file_name);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
      */
+
     private static final boolean AUTO_HIDE = true;
 
     /**
@@ -106,6 +121,14 @@ public class ShowFileText extends Fragment {
     };
     private FragmentShowFileTextBinding binding;
 
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            file_name = getArguments().getString("file_name");
+        }
+    }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -123,13 +146,20 @@ public class ShowFileText extends Fragment {
         mVisible = true;
 
         mControlsView = binding.fullscreenContentControls;
-        mContentView = binding.fullscreenContent;
+        mContentView = binding.html;
+
+        WebView webView = view.findViewById(R.id.html);
+        webView.getSettings().setAllowContentAccess(true);
+        webView.getSettings().setAllowFileAccess(true);
+        File[] dirs = ((AppCompatActivity)getActivity()).getExternalFilesDirs(null);
+        String htmlPath = dirs[0] + "/html/" + file_name;
+        webView.loadUrl (htmlPath);
 
         // Set up the user interaction to manually show or hide the system UI.
         mContentView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                toggle();
+                //toggle();
             }
         });
 

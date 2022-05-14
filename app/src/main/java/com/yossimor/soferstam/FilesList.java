@@ -2,11 +2,16 @@ package com.yossimor.soferstam;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -38,6 +43,22 @@ public class FilesList extends AppCompatActivity {
         adapter.notifyDataSetChanged();
         listView = findViewById(R.id.selectListView);
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                TextView tv = view.findViewById( R.id.file_name);
+                String file_name = tv.getText().toString();
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra("file_name", file_name);
+                setResult(Activity.RESULT_OK,returnIntent);
+                finish();
+                }
+
+
+        });
+
 
     }
 }

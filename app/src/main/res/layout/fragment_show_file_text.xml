@@ -10,16 +10,13 @@
     <!-- The primary full-screen view. This can be replaced with whatever view
          is needed to present your content, e.g. VideoView, SurfaceView,
          TextureView, etc. -->
-    <TextView
-        android:id="@+id/fullscreen_content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:keepScreenOn="true"
-        android:text="@string/dummy_content"
-        android:textColor="?attr/fullscreenTextColor"
-        android:textSize="50sp"
-        android:textStyle="bold" />
+    <WebView
+        android:id="@+id/html"
+        android:layout_marginStart="-40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    </WebView>
 
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->

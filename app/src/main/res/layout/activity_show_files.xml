@@ -9,9 +9,6 @@
     android:weightSum="100"
     tools:context=".ShowFiles">
 
-    <include
-        android:id="@+id/include"
-        layout="@layout/toolbar" />
 
 
 

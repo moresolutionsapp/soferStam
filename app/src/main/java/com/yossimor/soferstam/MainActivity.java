@@ -167,17 +167,29 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPositionClicked(View view) {
                 Bundle b = new Bundle();
-                TextView tv = view.findViewById( R.id._id);
-                @SuppressLint("Range")
-                int child_is_files = cursor.getInt( cursor.getColumnIndex("child_is_files"));
-                b.putString("parent_id",  tv.getText().toString());
-                tv = view.findViewById( R.id.menu_desc);
-                b.putString("menu_desc",  tv.getText().toString());
-                b.putBoolean("child_is_files",  child_is_files==1);
-                Intent intent;
-                intent = new Intent(MainActivity.this, MainActivity.class);
-                intent.putExtras(b);
-                editMenuActivityResultLauncher.launch(intent);
+                @SuppressLint("Range") int is_files = cursor.getInt( cursor.getColumnIndex("is_files"));
+                if (is_files==1){
+                    TextView tv = view.findViewById( R.id.parent_id);
+                    b.putString("parent_id",  tv.getText().toString());
+                    Intent intent;
+                    intent = new Intent(MainActivity.this, ShowFiles.class);
+                    intent.putExtras(b);
+                    startActivity(intent);
+                }
+                else{
+                    TextView tv = view.findViewById( R.id._id);
+                    @SuppressLint("Range")
+                    int child_is_files = cursor.getInt( cursor.getColumnIndex("child_is_files"));
+                    b.putString("parent_id",  tv.getText().toString());
+                    tv = view.findViewById( R.id.menu_desc);
+                    b.putString("menu_desc",  tv.getText().toString());
+                    b.putBoolean("child_is_files",  child_is_files==1);
+                    Intent intent;
+                    intent = new Intent(MainActivity.this, MainActivity.class);
+                    intent.putExtras(b);
+                    editMenuActivityResultLauncher.launch(intent);
+                }
+
 
 
 
@@ -192,10 +204,14 @@ public class MainActivity extends AppCompatActivity {
                 int is_files = cursor.getInt( cursor.getColumnIndex("is_files"));
                 if (is_files==1){
                     tv = view.findViewById( R.id._id);
-                    b.putString("parent_id",  tv.getText().toString());
+                    b.putString("file_id",  tv.getText().toString());
                     tv = view.findViewById( R.id.menu_desc);
-                    b.putString("menu_desc",  tv.getText().toString());
+                    b.putString("file_name",  tv.getText().toString());
+                    tv = view.findViewById( R.id.parent_id);
+                    b.putString("parent_id",  tv.getText().toString());
                     b.putBoolean("child_is_files",  true);                  Intent intent;
+                    @SuppressLint("Range") int page_no = cursor.getInt( cursor.getColumnIndex("page_no"));
+                    b.putInt("page_no",  page_no);
                     intent = new Intent(MainActivity.this, LoadFile.class);
                     intent.putExtras(b);
                     editMenuActivityResultLauncher.launch(intent);

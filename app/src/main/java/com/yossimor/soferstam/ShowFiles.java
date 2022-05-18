@@ -1,7 +1,9 @@
 package com.yossimor.soferstam;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
+import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.os.Bundle;
 
@@ -32,10 +34,17 @@ public class ShowFiles extends AppCompatActivity {
 
         tabAdapter = new TabAdapter(getSupportFragmentManager());
         DBManager dbManager = new DBManager(this);
+        dbManager.open();
         Cursor cursor = dbManager.fetch_menu(p_parent_id,"");
-        for (int i=0;i<cursor.getCount();++i){
-            tabAdapter.addFragment(new ShowFileText(),"");
+        for (int i=0;i<cursor.getCount();i++){
+            @SuppressLint("Range") String file_name = cursor.getString( cursor.getColumnIndex("menu_desc"));
+            Bundle bundle = new Bundle();
+            bundle.putString("file_name", file_name);
+            Fragment fragment = new ShowFileText();
+            fragment.setArguments(bundle);
+            tabAdapter.addFragment(fragment,"");
         }
+        dbManager.close();
 
         viewPager.setAdapter(tabAdapter);
         tabLayout.setupWithViewPager(viewPager);

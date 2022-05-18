@@ -97,10 +97,13 @@ public class LoadFile extends AppCompatActivity {
             p_parent_id = Integer.parseInt(b.getString("parent_id"));
             p_fileName = b.getString("file_name");
             et_fileName.setText(p_fileName);
-            if (b.getString("page_no")!=null && !b.getString("page_no").trim().equals("") ){
-                p_page_no = Integer.parseInt(b.getString("page_no"));
-                et_pageNo.setText(p_page_no);
+            b.getInt("page_no");
+            p_page_no = b.getInt("page_no");
+            if (p_page_no!=0){
+                et_pageNo.setText(String.valueOf(p_page_no));
             }
+
+
             et_fileName.setText(p_fileName);
 
 

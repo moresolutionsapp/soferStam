@@ -21,11 +21,14 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
     private DBManager dbManager;
     private EditText etSearchbox;
     ActivityResultLauncher<Intent> editMenuActivityResultLauncher;
+    private CheckBox checkBox;
+    Cursor cursor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +50,9 @@ public class MainActivity extends AppCompatActivity {
 
         Bundle b = getIntent().getExtras();
         if (b != null) {
-            p_parent_id = Integer.parseInt(b.getString("parent_id"));
+            if (b.getString("parent_id")!=null){
+                p_parent_id = Integer.parseInt(b.getString("parent_id"));
+            }
             p_menuDesc = b.getString("menu_desc");
             child_is_files = b.getBoolean("child_is_files");
 
@@ -54,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.my_toolbar);
         TextView mTitle = toolbar.findViewById(R.id.toolbar_title);
+        checkBox = toolbar.findViewById(R.id.checkbox);
+
         setSupportActionBar(toolbar);
         if (p_parent_id==0){
             mTitle.setText("סופר סתם");
@@ -82,19 +91,28 @@ public class MainActivity extends AppCompatActivity {
         floatingActionButton.setVisibility(View.VISIBLE);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(final View v) {
-                Intent intent=null;
-                if (child_is_files){
-                    intent = new Intent(MainActivity.this, LoadFile.class);
-                    Bundle b = new Bundle();
-                    b.putString("parent_id",  String.valueOf(p_parent_id));
-                    b.putString("menu_desc",  p_menuDesc);
-                    intent.putExtras(b);
-                }
-                else{
-                    intent = new Intent(MainActivity.this, EditMenu.class);
+
+                if (cursor.getCount()<5){
+                    Intent intent=null;
+                    if (child_is_files){
+                        intent = new Intent(MainActivity.this, LoadFile.class);
+                        Bundle b = new Bundle();
+                        b.putString("parent_id",  String.valueOf(p_parent_id));
+                        b.putString("menu_desc",  p_menuDesc);
+                        intent.putExtras(b);
+                    }
+                    else{
+                        intent = new Intent(MainActivity.this, EditMenu.class);
+                        Bundle b = new Bundle();
+                        b.putString("menu_id",  "0");
+                        b.putString("parent_id",  String.valueOf(p_parent_id));
+                        intent.putExtras(b);
+
+                    }
+
+                    editMenuActivityResultLauncher.launch(intent);
                 }
 
-                editMenuActivityResultLauncher.launch(intent);
             }
 
 
@@ -160,41 +178,55 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
-        Cursor cursor = dbManager.fetch_menu(p_parent_id,arg0);
+        cursor = dbManager.fetch_menu(p_parent_id,(child_is_files ? 1:0),arg0);
         //dbManager.delete();
         RecyclerView.Adapter mAdapter;
         mAdapter = new MainActivityAdpater(cursor, new ClickListener() {
             @Override
-            public void onPositionClicked(View view) {
+            public void onPositionClicked(int position,View view) {
                 Bundle b = new Bundle();
-                @SuppressLint("Range") int is_files = cursor.getInt( cursor.getColumnIndex("is_files"));
-                if (is_files==1){
-                    TextView tv = view.findViewById( R.id.parent_id);
-                    b.putString("parent_id",  tv.getText().toString());
-                    Intent intent;
-                    intent = new Intent(MainActivity.this, ShowFiles.class);
-                    intent.putExtras(b);
-                    startActivity(intent);
+                cursor.moveToPosition(position);
+                @SuppressLint("Range") int child_is_files = cursor.getInt( cursor.getColumnIndex("child_is_files"));
+                //@SuppressLint("Range") int is_files = cursor.getInt( cursor.getColumnIndex("is_files"));
+                if (child_is_files==1 )
+                    if (!checkBox.isChecked()){
+                        TextView tv = view.findViewById( R.id._id);
+                        b.putString("parent_id",  tv.getText().toString());
+                        Intent intent;
+                        intent = new Intent(MainActivity.this, ShowFiles.class);
+                        intent.putExtras(b);
+                        startActivity(intent);
+                    }
+                    else {
+                        TextView tv = view.findViewById( R.id._id);
+                        b.putString("parent_id",  tv.getText().toString());
+                        tv = view.findViewById( R.id.menu_desc);
+                        b.putString("menu_desc",  tv.getText().toString());
+                        b.putBoolean("child_is_files", true);
+                        Intent intent;
+                        intent = new Intent(MainActivity.this, MainActivity.class);
+                        intent.putExtras(b);
+                        editMenuActivityResultLauncher.launch(intent);
                 }
                 else{
                     TextView tv = view.findViewById( R.id._id);
-                    @SuppressLint("Range")
-                    int child_is_files = cursor.getInt( cursor.getColumnIndex("child_is_files"));
                     b.putString("parent_id",  tv.getText().toString());
                     tv = view.findViewById( R.id.menu_desc);
                     b.putString("menu_desc",  tv.getText().toString());
-                    b.putBoolean("child_is_files",  child_is_files==1);
+                    b.putBoolean("child_is_files",  false);
                     Intent intent;
                     intent = new Intent(MainActivity.this, MainActivity.class);
                     intent.putExtras(b);
                     editMenuActivityResultLauncher.launch(intent);
                 }
+                
 
 
 
 
             }
 
+            @SuppressLint("Range")
             @Override
             public void onLongClicked(int position,View view) {
                 Bundle b = new Bundle();
@@ -223,6 +255,7 @@ public class MainActivity extends AppCompatActivity {
                     b.putString("menu_desc",  tv.getText().toString());
                     tv = view.findViewById( R.id.parent_id);
                     b.putString("parent_id",  tv.getText().toString());
+                    b.putInt("child_is_files",cursor.getInt( cursor.getColumnIndex("child_is_files")));
                     Intent intent;
                     intent = new Intent(MainActivity.this, EditMenu.class);
                     intent.putExtras(b);
@@ -244,7 +277,7 @@ public class MainActivity extends AppCompatActivity {
     public interface ClickListener {
 
 
-        void onPositionClicked(View view);
+        void onPositionClicked(int position,View view);
 
         void onLongClicked(int position,View view);
     }

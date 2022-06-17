@@ -55,6 +55,19 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <CheckBox
+                android:id="@+id/child_is_files"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:text="קבצים/קובץ"
+                android:textSize="@dimen/Edit"
+                >
+            </CheckBox>
+
 
 
 

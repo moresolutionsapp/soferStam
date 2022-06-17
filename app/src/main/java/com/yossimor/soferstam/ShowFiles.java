@@ -35,8 +35,9 @@ public class ShowFiles extends AppCompatActivity {
         tabAdapter = new TabAdapter(getSupportFragmentManager());
         DBManager dbManager = new DBManager(this);
         dbManager.open();
-        Cursor cursor = dbManager.fetch_menu(p_parent_id,"");
+        Cursor cursor = dbManager.fetch_menu_files(p_parent_id);
         for (int i=0;i<cursor.getCount();i++){
+            cursor.moveToPosition(i);
             @SuppressLint("Range") String file_name = cursor.getString( cursor.getColumnIndex("menu_desc"));
             Bundle bundle = new Bundle();
             bundle.putString("file_name", file_name);

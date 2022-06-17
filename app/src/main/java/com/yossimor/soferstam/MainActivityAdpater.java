@@ -69,7 +69,7 @@ public class MainActivityAdpater extends RecyclerView.Adapter<MainActivityAdpate
 
         @Override
         public void onClick(View view) {
-            listenerRef.get().onPositionClicked(itemView);
+            listenerRef.get().onPositionClicked(getAdapterPosition(),itemView);
         }
 
         @Override

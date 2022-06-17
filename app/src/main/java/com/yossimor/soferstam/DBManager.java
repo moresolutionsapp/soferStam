@@ -37,14 +37,28 @@ public class DBManager {
     }
 
 
-    public Cursor fetch_menu(int parent,CharSequence arg0) {
+    public Cursor fetch_menu(int parent,int is_files,CharSequence arg0) {
         String[] selectionArgs;
-        selectionArgs = new String[] { Integer.toString(parent),"%" + arg0 + "%"};
+        selectionArgs = new String[] { Integer.toString(parent),Integer.toString(is_files),"%" + arg0 + "%"};
         String Select = "select *"+
                 " from menu "+
-                " where parent_id = ? and" +
+                " where parent_id = ? and is_files=? and" +
                 " menu_desc like ? " +
                 " order by _id";
+        Cursor cursor = database.rawQuery(Select,selectionArgs);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        return cursor;
+    }
+
+    public Cursor fetch_menu_files(int parent) {
+        String[] selectionArgs;
+        selectionArgs = new String[] { Integer.toString(parent)};
+        String Select = "select *"+
+                " from menu "+
+                " where parent_id = ? " +
+                " order by page_no";
         Cursor cursor = database.rawQuery(Select,selectionArgs);
         if (cursor != null) {
             cursor.moveToFirst();
@@ -64,6 +78,7 @@ public class DBManager {
         contentValue.put(DatabaseHelper.parent_id, parent_id);
         contentValue.put(DatabaseHelper.menu_desc, menu_desc);
         contentValue.put(DatabaseHelper.child_is_files, child_is_files);
+        contentValue.put(DatabaseHelper.is_file, 0);
 
 
         if(_id==0 ){

@@ -22,6 +22,7 @@ import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -48,6 +49,27 @@ public class MainActivity extends AppCompatActivity {
 
         etSearchbox = (EditText) findViewById(R.id.etSearchbox);
 
+        FloatingActionButton floatingActionButton = findViewById(R.id.floatingAddButton);
+        Toolbar toolbar = findViewById(R.id.my_toolbar);
+        TextView mTitle = toolbar.findViewById(R.id.toolbar_title);
+        checkBox = toolbar.findViewById(R.id.checkbox);
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            {
+                if ( isChecked )
+                {
+                    floatingActionButton.setVisibility(View.VISIBLE);
+                }
+                else{
+                    floatingActionButton.setVisibility(View.INVISIBLE);
+                }
+
+
+            }
+        });
+
         Bundle b = getIntent().getExtras();
         if (b != null) {
             if (b.getString("parent_id")!=null){
@@ -55,13 +77,11 @@ public class MainActivity extends AppCompatActivity {
             }
             p_menuDesc = b.getString("menu_desc");
             child_is_files = b.getBoolean("child_is_files");
-
+            checkBox.setChecked(b.getBoolean("checkBox"));
 
         }
 
-        Toolbar toolbar = findViewById(R.id.my_toolbar);
-        TextView mTitle = toolbar.findViewById(R.id.toolbar_title);
-        checkBox = toolbar.findViewById(R.id.checkbox);
+
 
         setSupportActionBar(toolbar);
         if (p_parent_id==0){
@@ -70,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
         else{
             getSupportActionBar().setDisplayHomeAsUpEnabled(true); // enable the back button
             mTitle.setText(p_menuDesc);
+            checkBox.setVisibility(View.INVISIBLE);
         }
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
@@ -87,12 +108,14 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-        FloatingActionButton floatingActionButton = findViewById(R.id.floatingAddButton);
-        floatingActionButton.setVisibility(View.VISIBLE);
+
+        if (checkBox.isChecked()){
+            floatingActionButton.setVisibility(View.VISIBLE);
+        }
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(final View v) {
 
-                if (cursor.getCount()<5){
+
                     Intent intent=null;
                     if (child_is_files){
                         intent = new Intent(MainActivity.this, LoadFile.class);
@@ -111,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     editMenuActivityResultLauncher.launch(intent);
-                }
+
 
             }
 
@@ -187,39 +210,44 @@ public class MainActivity extends AppCompatActivity {
                 Bundle b = new Bundle();
                 cursor.moveToPosition(position);
                 @SuppressLint("Range") int child_is_files = cursor.getInt( cursor.getColumnIndex("child_is_files"));
-                //@SuppressLint("Range") int is_files = cursor.getInt( cursor.getColumnIndex("is_files"));
-                if (child_is_files==1 )
-                    if (!checkBox.isChecked()){
-                        TextView tv = view.findViewById( R.id._id);
-                        b.putString("parent_id",  tv.getText().toString());
-                        Intent intent;
-                        intent = new Intent(MainActivity.this, ShowFiles.class);
-                        intent.putExtras(b);
-                        startActivity(intent);
-                    }
-                    else {
+                @SuppressLint("Range") int is_files = cursor.getInt( cursor.getColumnIndex("is_files"));
+                if (is_files==0){
+                    if (child_is_files==1 )
+                        if (!checkBox.isChecked()){
+                            TextView tv = view.findViewById( R.id._id);
+                            b.putString("parent_id",  tv.getText().toString());
+                            Intent intent;
+                            intent = new Intent(MainActivity.this, ShowFiles.class);
+                            intent.putExtras(b);
+                            startActivity(intent);
+                        }
+                        else {
+                            TextView tv = view.findViewById( R.id._id);
+                            b.putString("parent_id",  tv.getText().toString());
+                            tv = view.findViewById( R.id.menu_desc);
+                            b.putString("menu_desc",  tv.getText().toString());
+                            b.putBoolean("child_is_files", true);
+                            b.putBoolean("checkBox", checkBox.isChecked());
+                            Intent intent;
+                            intent = new Intent(MainActivity.this, MainActivity.class);
+                            intent.putExtras(b);
+                            editMenuActivityResultLauncher.launch(intent);
+                        }
+                    else{
                         TextView tv = view.findViewById( R.id._id);
                         b.putString("parent_id",  tv.getText().toString());
                         tv = view.findViewById( R.id.menu_desc);
                         b.putString("menu_desc",  tv.getText().toString());
-                        b.putBoolean("child_is_files", true);
+                        b.putBoolean("child_is_files",  false);
+                        b.putBoolean("checkBox", checkBox.isChecked());
                         Intent intent;
                         intent = new Intent(MainActivity.this, MainActivity.class);
                         intent.putExtras(b);
                         editMenuActivityResultLauncher.launch(intent);
+                    }
+
                 }
-                else{
-                    TextView tv = view.findViewById( R.id._id);
-                    b.putString("parent_id",  tv.getText().toString());
-                    tv = view.findViewById( R.id.menu_desc);
-                    b.putString("menu_desc",  tv.getText().toString());
-                    b.putBoolean("child_is_files",  false);
-                    Intent intent;
-                    intent = new Intent(MainActivity.this, MainActivity.class);
-                    intent.putExtras(b);
-                    editMenuActivityResultLauncher.launch(intent);
-                }
-                
+
 
 
 

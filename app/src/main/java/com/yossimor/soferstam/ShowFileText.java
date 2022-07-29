@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -17,6 +18,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +26,7 @@ import android.view.WindowManager;
 import android.webkit.WebView;
 import android.widget.ImageView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.yossimor.soferstam.databinding.FragmentShowFileTextBinding;
 
 import java.io.File;
@@ -33,6 +36,8 @@ import java.io.IOException;
 public class ShowFileText extends Fragment {
 
     private String file_name;
+    MyScrollView scrollView;
+    boolean isScroliing = false;
 
     public static ShowFileText newInstance(String file_name) {
         ShowFileText fragment = new ShowFileText();
@@ -71,35 +76,50 @@ public class ShowFileText extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //mVisible = true;
-        //mControlsView = binding.fullscreenContentControls;
-        //mContentView = binding.html;
+
+        scrollView = (MyScrollView) view.findViewById(R.id.scrollView);
+
+        scrollView.setScrolling(isScroliing); // to disable scrolling
+
+
+
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) view.findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if (item.getItemId() == R.id.action_scroll) {
+
+
+                    scrollView.setScrolling(!isScroliing); // to enable scrolling.
+                    isScroliing=!isScroliing;
+                    if (!isScroliing){
+                        item.setTitle("גלול");
+                    }
+                    else{
+                        item.setTitle("אל תגלול");
+                    }
+
+
+                }
+
+
+
+                return true;
+            }
+        });
 
         File[] dirs = ((AppCompatActivity)getActivity()).getExternalFilesDirs(null);
         String htmlPath = dirs[0] + "/html/" + file_name;
-        //Bitmap myBitmap = BitmapFactory.decodeFile(htmlPath);
-
 
         File file = new File(htmlPath);
 
-
-
-
-
         ImageView myImage = (ImageView) view.findViewById(R.id.image_text);
         myImage.setImageURI(Uri.fromFile(file));
-        //myImage.setImageBitmap(myBitmap);
-
-
-//        WebView webView = view.findViewById(R.id.html);
-//        webView.getSettings().setAllowContentAccess(true);
-//        webView.getSettings().setAllowFileAccess(true);
-//        File[] dirs = ((AppCompatActivity)getActivity()).getExternalFilesDirs(null);
-//        String htmlPath = dirs[0] + "/html/" + file_name;
-//        webView.loadUrl (htmlPath);
 
 
         hideSystemUI();
+
+
 
 
 

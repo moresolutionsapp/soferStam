@@ -1,36 +1,30 @@
 package com.yossimor.soferstam;
 
-import android.annotation.SuppressLint;
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.webkit.WebView;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.yossimor.soferstam.databinding.FragmentShowFileTextBinding;
 
 import java.io.File;
-import java.io.IOException;
+
 
 
 public class ShowFileText extends Fragment {
@@ -38,6 +32,9 @@ public class ShowFileText extends Fragment {
     private String file_name;
     MyScrollView scrollView;
     boolean isScroliing = false;
+    double zoom_size=1;
+    int initMyImageHeight;
+    int initMyImageWidth;
 
     public static ShowFileText newInstance(String file_name) {
         ShowFileText fragment = new ShowFileText();
@@ -77,36 +74,9 @@ public class ShowFileText extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        scrollView = (MyScrollView) view.findViewById(R.id.scrollView);
-
-        scrollView.setScrolling(isScroliing); // to disable scrolling
 
 
 
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) view.findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if (item.getItemId() == R.id.action_scroll) {
-
-
-                    scrollView.setScrolling(!isScroliing); // to enable scrolling.
-                    isScroliing=!isScroliing;
-                    if (!isScroliing){
-                        item.setTitle("גלול");
-                    }
-                    else{
-                        item.setTitle("אל תגלול");
-                    }
-
-
-                }
-
-
-
-                return true;
-            }
-        });
 
         File[] dirs = ((AppCompatActivity)getActivity()).getExternalFilesDirs(null);
         String htmlPath = dirs[0] + "/html/" + file_name;
@@ -117,7 +87,111 @@ public class ShowFileText extends Fragment {
         myImage.setImageURI(Uri.fromFile(file));
 
 
+
+
         hideSystemUI();
+
+        scrollView = (MyScrollView) view.findViewById(R.id.scrollView);
+
+        scrollView.setScrolling(isScroliing); // to disable scrolling
+
+
+
+
+
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) view.findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if (item.getItemId() == R.id.action_scroll) {
+                    scrollView.setScrolling(!isScroliing); // to enable scrolling.
+                    isScroliing=!isScroliing;
+                    if (!isScroliing){
+                        item.setTitle("גלול");
+                    }
+                    else{
+                        item.setTitle("אל תגלול");
+                    }
+                }
+                if (item.getItemId() == R.id.action_zoom_in) {
+                    if (initMyImageHeight==0){
+                        initMyImageHeight=myImage.getHeight();
+                        initMyImageWidth=myImage.getWidth();
+                    }
+
+                    zoom_size = zoom_size *1.1;
+
+//                    myImage.getLayoutParams().height = (int) (myImage.getHeight()*1.1);
+//                    myImage.getLayoutParams().width = (int) (myImage.getWidth()*1.1);
+                    myImage.getLayoutParams().height = (int) (initMyImageHeight*zoom_size);
+                    myImage.getLayoutParams().width = (int) (initMyImageWidth*zoom_size);
+                    myImage.requestLayout();
+                    DBManager dbManager = new DBManager(getActivity());
+                    dbManager.open();
+                    dbManager.updateZoomSize(zoom_size);
+                    dbManager.close();
+
+
+
+
+
+                }
+
+                if (item.getItemId() == R.id.action_zoom_out) {
+                    if (initMyImageHeight==0){
+                        initMyImageHeight=myImage.getHeight();
+                        initMyImageWidth=myImage.getWidth();
+                    }
+                    zoom_size = zoom_size *0.9;
+//                    myImage.getLayoutParams().height = (int) (myImage.getHeight()*0.9);
+//                    myImage.getLayoutParams().width = (int) (myImage.getWidth()*0.9);
+                    myImage.getLayoutParams().height = (int) (initMyImageHeight*zoom_size);
+                    myImage.getLayoutParams().width = (int) (initMyImageWidth*zoom_size);
+                    myImage.requestLayout();
+                    DBManager dbManager = new DBManager(getActivity());
+                    dbManager.open();
+                    dbManager.updateZoomSize(zoom_size);
+                    dbManager.close();
+
+                }
+
+                if (item.getItemId() == R.id.reset_zoom) {
+                    zoom_size=1;
+                    if (initMyImageHeight==0){
+                        initMyImageHeight=myImage.getHeight();
+                        initMyImageWidth=myImage.getWidth();
+                    }
+                    myImage.getLayoutParams().height = (int) (initMyImageHeight);
+                    myImage.getLayoutParams().width = (int) (initMyImageWidth);
+                    myImage.requestLayout();
+                    DBManager dbManager = new DBManager(getActivity());
+                    dbManager.open();
+                    dbManager.updateZoomSize(zoom_size);
+                    dbManager.close();
+                }
+
+                if (item.getItemId() == R.id.last_zoom) {
+                    if (initMyImageHeight==0){
+                        initMyImageHeight=myImage.getHeight();
+                        initMyImageWidth=myImage.getWidth();
+                    }
+                    DBManager dbManager = new DBManager(getActivity());
+                    dbManager.open();
+                    zoom_size=dbManager.get_last_zoom_size();
+                    dbManager.close();
+                    myImage.getLayoutParams().height = (int) (initMyImageHeight*zoom_size);
+                    myImage.getLayoutParams().width = (int) (initMyImageWidth*zoom_size);
+                    myImage.requestLayout();
+
+                }
+
+
+
+                return true;
+            }
+        });
+
+
 
 
 

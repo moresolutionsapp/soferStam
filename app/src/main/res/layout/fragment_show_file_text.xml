@@ -4,7 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/fullscreenBackgroundColor"
     android:theme="@style/ThemeOverlay.SoferStam.FullscreenContainer"
     tools:context=".ShowFileText">
 
@@ -24,8 +23,11 @@
             android:fitsSystemWindows="true"
             android:adjustViewBounds="true"
             android:scaleType="fitXY"
-            android:src="@drawable/test_pdf">
+            android:src="@drawable/test_pdf"
+            android:contentDescription="image">
         </ImageView>
+
+
 
 
     </com.yossimor.soferstam.MyScrollView>

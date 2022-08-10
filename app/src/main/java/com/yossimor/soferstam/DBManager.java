@@ -1,5 +1,6 @@
 package com.yossimor.soferstam;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -34,6 +35,51 @@ public class DBManager {
 
     public void close() {
         dbHelper.close();
+    }
+
+    public void insertControl() {
+        ContentValues contentValue = new ContentValues();
+        contentValue.put(DatabaseHelper.last_file ,"");
+        contentValue.put(DatabaseHelper.zoom_size, 1);
+        database.insert(DatabaseHelper.control, null, contentValue);
+
+    }
+
+    private void control_rec_exist(){
+        String Select = "SELECT count(*)  from control ;";
+        String[] selectionArgs;
+        selectionArgs = new String[] {};
+        @SuppressLint("Recycle") Cursor cursor = database.rawQuery(Select,selectionArgs);
+        cursor.moveToFirst();
+        if (cursor.getInt(0)==0){
+            insertControl();
+        }
+    }
+
+    public void updateZoomSize (double zoom_size) {
+        control_rec_exist();
+        ContentValues contentValue = new ContentValues();
+        contentValue.put(DatabaseHelper.zoom_size, zoom_size);
+        database.update(DatabaseHelper.control, contentValue, null , null);
+
+    }
+
+    public double get_last_zoom_size(){
+        String Select = "SELECT zoom_size  from control ;";
+        String[] selectionArgs;
+        selectionArgs = new String[] {};
+        @SuppressLint("Recycle") Cursor cursor = database.rawQuery(Select,selectionArgs);
+        cursor.moveToFirst();
+        return  cursor.getDouble(0);
+
+    }
+
+    public void updateLastFile(String last_file ) {
+        control_rec_exist();
+        ContentValues contentValue = new ContentValues();
+        contentValue.put(DatabaseHelper.last_file ,last_file);
+        database.update(DatabaseHelper.control, contentValue, null , null);
+
     }
 
 

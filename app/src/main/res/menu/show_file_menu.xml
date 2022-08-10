@@ -9,5 +9,34 @@
         app:showAsAction="always"
         android:icon="@drawable/ic_scroll_24"/>
 
+    <item
+        android:id="@+id/action_zoom_in"
+        android:enabled="true"
+        android:title="הגדל"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_add_24"/>
+
+    <item
+        android:id="@+id/action_zoom_out"
+        android:enabled="true"
+        android:title="הקטן"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_minimize_24"/>
+
+    <item
+        android:id="@+id/reset_zoom"
+        android:enabled="true"
+        android:title="גודל מקורי"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_photo_size_select_actual_24"
+        />
+
+    <item
+        android:id="@+id/last_zoom"
+        android:enabled="true"
+        android:title="הגודל שלי"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_baseline_photo_size_select_large_24"
+        />
 
 </menu>

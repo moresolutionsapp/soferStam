@@ -11,14 +11,20 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Toast;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.tabs.TabLayout;
 import com.yossimor.soferstam.databinding.FragmentShowFileTextBinding;
 
 import java.io.File;
@@ -34,9 +40,12 @@ public class ShowFileText extends Fragment {
     int initMyImageHeight;
     int initMyImageWidth;
     BottomNavigationView bottomNavigationView;
+    private TabLayout tabs;
+    private boolean  sysMenuVisible;
 
 
-    public static ShowFileText newInstance(String file_name) {
+
+    public static ShowFileText newInstance(String file_name,int page) {
         ShowFileText fragment = new ShowFileText();
         Bundle args = new Bundle();
         args.putString("file_name", file_name);
@@ -66,6 +75,7 @@ public class ShowFileText extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         binding = FragmentShowFileTextBinding.inflate(inflater, container, false);
+
         return binding.getRoot();
 
 
@@ -79,6 +89,7 @@ public class ShowFileText extends Fragment {
 
 
 
+
         File[] dirs = ((AppCompatActivity)getActivity()).getExternalFilesDirs(null);
         String htmlPath = dirs[0] + "/html/" + file_name;
 
@@ -86,23 +97,52 @@ public class ShowFileText extends Fragment {
 
         ImageView myImage = (ImageView) view.findViewById(R.id.image_text);
         myImage.setImageURI(Uri.fromFile(file));
+        myImage.setOnClickListener(new View.OnClickListener() {
+            //@Override
+            public void onClick(View v) {
+                if (((ShowFiles) getActivity()).sysMenuOn){
+                    bottomNavigationView.setVisibility(View.VISIBLE);
+                }
 
-        hideSystemUI();
-
-        scrollView = (MyScrollView) view.findViewById(R.id.scrollView);
-
-        scrollView.setScrolling(!isLocked); // to disable scrolling
-
-        view.getViewTreeObserver().addOnWindowFocusChangeListener(new ViewTreeObserver.OnWindowFocusChangeListener() {
-            @Override
-            public void onWindowFocusChanged(final boolean hasFocus) {
-                //bottomNavigationView.setVisibility(View.INVISIBLE);
             }
         });
 
 
 
+
+        view.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+
+                if(event.getAction() == MotionEvent.ACTION_MOVE){
+                    //do something
+                }
+                return true;
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
+        scrollView = (MyScrollView) view.findViewById(R.id.scrollView);
+
+        scrollView.setScrolling(!isLocked); // to disable scrolling
+
+
+
         bottomNavigationView = (BottomNavigationView) view.findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setVisibility(View.INVISIBLE);
+
+        tabs = (TabLayout)((ShowFiles)getActivity()).findViewById(R.id.tabLayout);
+
+
+
 
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -116,8 +156,10 @@ public class ShowFileText extends Fragment {
                     else{
                         item.setTitle("שחרר");
                         scrollView.setScrolling(false);
+                        //linearLayout_BottomNavigationView.addView(bottomNavigationView);
                         bottomNavigationView.setVisibility(View.INVISIBLE);
                         hideSystemUI();
+                        ((ShowFiles) getActivity()).sysMenuOn=false;
                     }
                     isLocked =!isLocked;
 
@@ -305,7 +347,7 @@ public class ShowFileText extends Fragment {
                             // Note that system bars will only be "visible" if none of the
                             // LOW_PROFILE, HIDE_NAVIGATION, or FULLSCREEN flags are set.
                             if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
-                                bottomNavigationView.setVisibility(View.VISIBLE);
+                                ((ShowFiles) getActivity()).sysMenuOn=true;
                                 // adjustments to your UI, such as showing the action bar or
                                 // other navigational controls.
                             } else {
@@ -322,8 +364,9 @@ public class ShowFileText extends Fragment {
         }
 
 
-
     }
+
+
 
 
 

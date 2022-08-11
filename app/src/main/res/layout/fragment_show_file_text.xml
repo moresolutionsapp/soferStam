@@ -30,7 +30,11 @@
 
 
 
+
+
     </com.yossimor.soferstam.MyScrollView>
+
+
 
     <LinearLayout
         android:id="@+id/linearLayout_BottomNavigationView"
@@ -43,7 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:labelVisibilityMode="labeled"
-            android:visibility="visible"
+            android:visibility="gone"
             app:menu="@menu/show_file_menu"
             android:layout_gravity="bottom"
             android:background="@color/white"

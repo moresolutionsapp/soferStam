@@ -10,15 +10,13 @@ import androidx.fragment.app.Fragment;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.yossimor.soferstam.databinding.FragmentShowFileTextBinding;
@@ -31,10 +29,12 @@ public class ShowFileText extends Fragment {
 
     private String file_name;
     MyScrollView scrollView;
-    boolean isScroliing = false;
+    boolean isLocked = true;
     double zoom_size=1;
     int initMyImageHeight;
     int initMyImageWidth;
+    BottomNavigationView bottomNavigationView;
+
 
     public static ShowFileText newInstance(String file_name) {
         ShowFileText fragment = new ShowFileText();
@@ -68,6 +68,7 @@ public class ShowFileText extends Fragment {
         binding = FragmentShowFileTextBinding.inflate(inflater, container, false);
         return binding.getRoot();
 
+
     }
 
     @Override
@@ -86,102 +87,114 @@ public class ShowFileText extends Fragment {
         ImageView myImage = (ImageView) view.findViewById(R.id.image_text);
         myImage.setImageURI(Uri.fromFile(file));
 
-
-
-
         hideSystemUI();
 
         scrollView = (MyScrollView) view.findViewById(R.id.scrollView);
 
-        scrollView.setScrolling(isScroliing); // to disable scrolling
+        scrollView.setScrolling(!isLocked); // to disable scrolling
+
+        view.getViewTreeObserver().addOnWindowFocusChangeListener(new ViewTreeObserver.OnWindowFocusChangeListener() {
+            @Override
+            public void onWindowFocusChanged(final boolean hasFocus) {
+                //bottomNavigationView.setVisibility(View.INVISIBLE);
+            }
+        });
 
 
 
+        bottomNavigationView = (BottomNavigationView) view.findViewById(R.id.bottomNavigationView);
 
 
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) view.findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if (item.getItemId() == R.id.action_scroll) {
-                    scrollView.setScrolling(!isScroliing); // to enable scrolling.
-                    isScroliing=!isScroliing;
-                    if (!isScroliing){
-                        item.setTitle("גלול");
+                if (item.getItemId() == R.id.action_locked) {
+                    if (isLocked){
+                        item.setTitle("נעל");
+                        scrollView.setScrolling(true); // to enable scrolling.
                     }
                     else{
-                        item.setTitle("אל תגלול");
+                        item.setTitle("שחרר");
+                        scrollView.setScrolling(false);
+                        bottomNavigationView.setVisibility(View.INVISIBLE);
+                        hideSystemUI();
                     }
-                }
-                if (item.getItemId() == R.id.action_zoom_in) {
-                    if (initMyImageHeight==0){
-                        initMyImageHeight=myImage.getHeight();
-                        initMyImageWidth=myImage.getWidth();
-                    }
+                    isLocked =!isLocked;
 
-                    zoom_size = zoom_size *1.1;
+
+                }
+                if (!isLocked){
+                    if (item.getItemId() == R.id.action_zoom_in) {
+                        if (initMyImageHeight==0){
+                            initMyImageHeight=myImage.getHeight();
+                            initMyImageWidth=myImage.getWidth();
+                        }
+
+                        zoom_size = zoom_size *1.1;
 
 //                    myImage.getLayoutParams().height = (int) (myImage.getHeight()*1.1);
 //                    myImage.getLayoutParams().width = (int) (myImage.getWidth()*1.1);
-                    myImage.getLayoutParams().height = (int) (initMyImageHeight*zoom_size);
-                    myImage.getLayoutParams().width = (int) (initMyImageWidth*zoom_size);
-                    myImage.requestLayout();
-                    DBManager dbManager = new DBManager(getActivity());
-                    dbManager.open();
-                    dbManager.updateZoomSize(zoom_size);
-                    dbManager.close();
+                        myImage.getLayoutParams().height = (int) (initMyImageHeight*zoom_size);
+                        myImage.getLayoutParams().width = (int) (initMyImageWidth*zoom_size);
+                        myImage.requestLayout();
+                        DBManager dbManager = new DBManager(getActivity());
+                        dbManager.open();
+                        dbManager.updateZoomSize(zoom_size);
+                        dbManager.close();
 
 
 
 
 
-                }
-
-                if (item.getItemId() == R.id.action_zoom_out) {
-                    if (initMyImageHeight==0){
-                        initMyImageHeight=myImage.getHeight();
-                        initMyImageWidth=myImage.getWidth();
                     }
-                    zoom_size = zoom_size *0.9;
+
+                    if (item.getItemId() == R.id.action_zoom_out) {
+                        if (initMyImageHeight==0){
+                            initMyImageHeight=myImage.getHeight();
+                            initMyImageWidth=myImage.getWidth();
+                        }
+                        zoom_size = zoom_size *0.9;
 //                    myImage.getLayoutParams().height = (int) (myImage.getHeight()*0.9);
 //                    myImage.getLayoutParams().width = (int) (myImage.getWidth()*0.9);
-                    myImage.getLayoutParams().height = (int) (initMyImageHeight*zoom_size);
-                    myImage.getLayoutParams().width = (int) (initMyImageWidth*zoom_size);
-                    myImage.requestLayout();
-                    DBManager dbManager = new DBManager(getActivity());
-                    dbManager.open();
-                    dbManager.updateZoomSize(zoom_size);
-                    dbManager.close();
+                        myImage.getLayoutParams().height = (int) (initMyImageHeight*zoom_size);
+                        myImage.getLayoutParams().width = (int) (initMyImageWidth*zoom_size);
+                        myImage.requestLayout();
+                        DBManager dbManager = new DBManager(getActivity());
+                        dbManager.open();
+                        dbManager.updateZoomSize(zoom_size);
+                        dbManager.close();
 
-                }
-
-                if (item.getItemId() == R.id.reset_zoom) {
-                    zoom_size=1;
-                    if (initMyImageHeight==0){
-                        initMyImageHeight=myImage.getHeight();
-                        initMyImageWidth=myImage.getWidth();
                     }
-                    myImage.getLayoutParams().height = (int) (initMyImageHeight);
-                    myImage.getLayoutParams().width = (int) (initMyImageWidth);
-                    myImage.requestLayout();
-                    DBManager dbManager = new DBManager(getActivity());
-                    dbManager.open();
-                    dbManager.updateZoomSize(zoom_size);
-                    dbManager.close();
-                }
 
-                if (item.getItemId() == R.id.last_zoom) {
-                    if (initMyImageHeight==0){
-                        initMyImageHeight=myImage.getHeight();
-                        initMyImageWidth=myImage.getWidth();
+                    if (item.getItemId() == R.id.reset_zoom) {
+                        zoom_size=1;
+                        if (initMyImageHeight==0){
+                            initMyImageHeight=myImage.getHeight();
+                            initMyImageWidth=myImage.getWidth();
+                        }
+                        myImage.getLayoutParams().height = (int) (initMyImageHeight);
+                        myImage.getLayoutParams().width = (int) (initMyImageWidth);
+                        myImage.requestLayout();
+                        DBManager dbManager = new DBManager(getActivity());
+                        dbManager.open();
+                        dbManager.updateZoomSize(zoom_size);
+                        dbManager.close();
                     }
-                    DBManager dbManager = new DBManager(getActivity());
-                    dbManager.open();
-                    zoom_size=dbManager.get_last_zoom_size();
-                    dbManager.close();
-                    myImage.getLayoutParams().height = (int) (initMyImageHeight*zoom_size);
-                    myImage.getLayoutParams().width = (int) (initMyImageWidth*zoom_size);
-                    myImage.requestLayout();
+
+                    if (item.getItemId() == R.id.last_zoom) {
+                        if (initMyImageHeight==0){
+                            initMyImageHeight=myImage.getHeight();
+                            initMyImageWidth=myImage.getWidth();
+                        }
+                        DBManager dbManager = new DBManager(getActivity());
+                        dbManager.open();
+                        zoom_size=dbManager.get_last_zoom_size();
+                        dbManager.close();
+                        myImage.getLayoutParams().height = (int) (initMyImageHeight*zoom_size);
+                        myImage.getLayoutParams().width = (int) (initMyImageWidth*zoom_size);
+                        myImage.requestLayout();
+
+                    }
 
                 }
 
@@ -284,11 +297,34 @@ public class ShowFileText extends Fragment {
                             // Hide the nav bar and status bar
                             | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                             | View.SYSTEM_UI_FLAG_FULLSCREEN);
+
+            decorView.setOnSystemUiVisibilityChangeListener
+                    (new View.OnSystemUiVisibilityChangeListener() {
+                        @Override
+                        public void onSystemUiVisibilityChange(int visibility) {
+                            // Note that system bars will only be "visible" if none of the
+                            // LOW_PROFILE, HIDE_NAVIGATION, or FULLSCREEN flags are set.
+                            if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
+                                bottomNavigationView.setVisibility(View.VISIBLE);
+                                // adjustments to your UI, such as showing the action bar or
+                                // other navigational controls.
+                            } else {
+                                // TODO: The system bars are NOT visible. Make any desired
+                                // adjustments to your UI, such as hiding the action bar or
+                                // other navigational controls.
+                            }
+                        }
+                    });
 //            linearLayout.setVisibility(View.INVISIBLE);
 //            root_view.setBackgroundColor(getColor(R.color.black));
         } catch (Exception e) {
 
         }
+
+
+
     }
+
+
 
 }

@@ -43,6 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:labelVisibilityMode="labeled"
+            android:visibility="visible"
             app:menu="@menu/show_file_menu"
             android:layout_gravity="bottom"
             android:background="@color/white"

@@ -39,7 +39,8 @@ public class DBManager {
 
     public void insertControl() {
         ContentValues contentValue = new ContentValues();
-        contentValue.put(DatabaseHelper.last_file ,"");
+        contentValue.put(DatabaseHelper.last_parent_id ,0);
+        contentValue.put(DatabaseHelper.last_tab_num ,0);
         contentValue.put(DatabaseHelper.zoom_size, 1);
         database.insert(DatabaseHelper.control, null, contentValue);
 
@@ -65,6 +66,7 @@ public class DBManager {
     }
 
     public double get_last_zoom_size(){
+        control_rec_exist();
         String Select = "SELECT zoom_size  from control ;";
         String[] selectionArgs;
         selectionArgs = new String[] {};
@@ -74,10 +76,24 @@ public class DBManager {
 
     }
 
-    public void updateLastFile(String last_file ) {
+    public Cursor get_last_file(){
+        control_rec_exist();
+        String Select = "SELECT last_parent_id,last_tab_num  from control ;";
+        String[] selectionArgs;
+        selectionArgs = new String[] {};
+        @SuppressLint("Recycle") Cursor cursor = database.rawQuery(Select,selectionArgs);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        return cursor;
+
+    }
+
+    public void updateLastFile(int  last_parent_id ,int last_tab_num) {
         control_rec_exist();
         ContentValues contentValue = new ContentValues();
-        contentValue.put(DatabaseHelper.last_file ,last_file);
+        contentValue.put(DatabaseHelper.last_parent_id ,last_parent_id);
+        contentValue.put(DatabaseHelper.last_tab_num ,last_tab_num);
         database.update(DatabaseHelper.control, contentValue, null , null);
 
     }

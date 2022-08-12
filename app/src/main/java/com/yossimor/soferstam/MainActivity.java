@@ -16,7 +16,9 @@ import android.app.Activity;
 import android.app.LauncherActivity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.opengl.Visibility;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
@@ -41,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
     ActivityResultLauncher<Intent> editMenuActivityResultLauncher;
     private CheckBox checkBox;
     Cursor cursor;
+    int click_counter =0;
+    boolean timerStart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +57,37 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.my_toolbar);
         TextView mTitle = toolbar.findViewById(R.id.toolbar_title);
         checkBox = toolbar.findViewById(R.id.checkbox);
+
+        Handler timerHandler = new Handler();
+        Runnable timerRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if (click_counter>=7){
+                    checkBox.setVisibility(View.VISIBLE);
+                    checkBox.setChecked(true);
+                }
+                click_counter=0;
+                timerStart=false;
+            }
+        };
+
+        mTitle.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (!timerStart && !checkBox.isChecked()){
+                    timerStart=true;
+                    timerHandler.postDelayed(timerRunnable,1500);
+                }
+                click_counter++;
+
+
+            }
+        });
+
+
+
+        checkBox = toolbar.findViewById(R.id.checkbox);
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
         {
             @Override
@@ -60,10 +95,27 @@ public class MainActivity extends AppCompatActivity {
             {
                 if ( isChecked )
                 {
+                    BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+                    MenuItem menuItem ;
+                    menuItem = bottomNavigationView.getMenu().findItem(R.id.action_load_files);
+                    menuItem.setVisible(true);
+                    menuItem = bottomNavigationView.getMenu().findItem(R.id.action_save_menu);
+                    menuItem.setVisible(true);
+                    menuItem = bottomNavigationView.getMenu().findItem(R.id.action_load_menu);
+                    menuItem.setVisible(true);
                     floatingActionButton.setVisibility(View.VISIBLE);
                 }
                 else{
                     floatingActionButton.setVisibility(View.INVISIBLE);
+                    BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+                    MenuItem menuItem ;
+                    menuItem = bottomNavigationView.getMenu().findItem(R.id.action_load_files);
+                    menuItem.setVisible(false);
+                    menuItem = bottomNavigationView.getMenu().findItem(R.id.action_save_menu);
+                    menuItem.setVisible(false);
+                    menuItem = bottomNavigationView.getMenu().findItem(R.id.action_load_menu);
+                    menuItem.setVisible(false);
+                    checkBox.setVisibility(View.INVISIBLE);
                 }
 
 
@@ -144,6 +196,7 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @SuppressLint("Range")
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if (item.getItemId() == R.id.action_load_files) {
@@ -152,6 +205,26 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
 
                 }
+
+                if (item.getItemId() == R.id.action_last_file) {
+                    DBManager dbManager = new DBManager(MainActivity.this);
+                    dbManager.open();
+                    Cursor cursor = dbManager.get_last_file();
+                    dbManager.close();
+                    Bundle b = new Bundle();
+                    int last_parent_id = cursor.getInt(cursor.getColumnIndex("last_parent_id"));
+                    if (last_parent_id!=0){
+                        b.putString("parent_id",  String.valueOf(last_parent_id));
+                        b.putString("last_tab",  String.valueOf(cursor.getInt(cursor.getColumnIndex("last_tab_num"))));
+                        Intent intent;
+                        intent = new Intent(MainActivity.this, ShowFiles.class);
+                        intent.putExtras(b);
+                        startActivity(intent);
+                    }
+
+
+                }
+
 
 
 
@@ -199,7 +272,7 @@ public class MainActivity extends AppCompatActivity {
         LinearLayoutManager horizontalLayoutManager =
                 new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        //recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
         cursor = dbManager.fetch_menu(p_parent_id,(child_is_files ? 1:0),arg0);
         //dbManager.delete();

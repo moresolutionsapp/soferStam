@@ -23,17 +23,23 @@ public class ShowFiles extends AppCompatActivity {
     public CustomViewPager viewPager;
     public TabAdapter tabAdapter;
     public boolean isLocked = true;
+    int p_parent_id = 0;
+    String p_last_tab_num ;
+    int last_tab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_files);
 
-        int p_parent_id = 0;
+
         Bundle b = getIntent().getExtras();
         if (b != null) {
             p_parent_id = Integer.parseInt(b.getString("parent_id"));
-
+            p_last_tab_num = b.getString("last_tab");
+            if (p_last_tab_num!=null){
+                last_tab=Integer.parseInt(p_last_tab_num);
+            }
         }
 
 
@@ -59,24 +65,36 @@ public class ShowFiles extends AppCompatActivity {
         viewPager.setAdapter(tabAdapter);
         tabLayout.setupWithViewPager(viewPager);
         viewPager.setPagingEnabled(false);
+        if (p_last_tab_num!=null){
+            tabLayout.getTabAt(last_tab).select();
+        }
+        else{
+            dbManager.open();
+            dbManager.updateLastFile(p_parent_id,tabLayout.getSelectedTabPosition());
+            dbManager.close();
+        }
 
-//        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-//            @Override
-//            public void onTabSelected(TabLayout.Tab tab) {
-//                hide_menu();
-//
-//            }
-//
-//            @Override
-//            public void onTabUnselected(TabLayout.Tab tab) {
-//
-//            }
-//
-//            @Override
-//            public void onTabReselected(TabLayout.Tab tab) {
-//
-//            }
-//        });
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                DBManager dbManager = new DBManager(ShowFiles.this);
+                dbManager.open();
+                dbManager.updateLastFile(p_parent_id,tabLayout.getSelectedTabPosition());
+                dbManager.close();
+
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
 
 

@@ -2,12 +2,43 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
+        <item
+            android:id="@+id/action_last_file"
+            android:enabled="true"
+            android:title="המשך עבודה"
+            app:showAsAction="always"
+            android:visible="true"
+            android:icon="@drawable/ic_last_page_24"/>
+
+
         <item
             android:id="@+id/action_load_files"
             android:enabled="true"
-            android:title="העתק קבצים"
+            android:title="טעינת jpg"
             app:showAsAction="always"
-            android:icon="@drawable/ic_copy_24"/>
+            android:visible="false"
+            android:icon="@drawable/ic_upload_24"/>
+
+
+
+
+
+        <item
+            android:id="@+id/action_save_menu"
+            android:enabled="true"
+            android:title="שמירת תפריט"
+            app:showAsAction="always"
+            android:visible="false"
+            android:icon="@drawable/ic_save_white_24dp"/>
+
+        <item
+            android:id="@+id/action_load_menu"
+            android:enabled="false"
+            android:title="טעינת תפריט"
+            app:showAsAction="always"
+            android:visible="false"
+            android:icon="@drawable/ic_upload_24"/>
 
 
 

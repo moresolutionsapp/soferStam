@@ -205,6 +205,10 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
 
                 }
+                if (item.getItemId() == R.id.action_save_menu) {
+                    Intent intent = new Intent(MainActivity.this, SaveMenu.class);
+                    startActivity(intent);
+                }
 
                 if (item.getItemId() == R.id.action_last_file) {
                     DBManager dbManager = new DBManager(MainActivity.this);

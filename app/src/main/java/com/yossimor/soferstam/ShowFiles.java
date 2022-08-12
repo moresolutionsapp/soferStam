@@ -4,12 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.Objects;
@@ -19,7 +22,7 @@ public class ShowFiles extends AppCompatActivity {
     public TabLayout tabLayout;
     public CustomViewPager viewPager;
     public TabAdapter tabAdapter;
-    public boolean sysMenuOn;
+    public boolean isLocked = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,10 +58,63 @@ public class ShowFiles extends AppCompatActivity {
 
         viewPager.setAdapter(tabAdapter);
         tabLayout.setupWithViewPager(viewPager);
+        viewPager.setPagingEnabled(false);
+
+//        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+//            @Override
+//            public void onTabSelected(TabLayout.Tab tab) {
+//                hide_menu();
+//
+//            }
+//
+//            @Override
+//            public void onTabUnselected(TabLayout.Tab tab) {
+//
+//            }
+//
+//            @Override
+//            public void onTabReselected(TabLayout.Tab tab) {
+//
+//            }
+//        });
 
 
 
     }
+
+    public void show_menu(){
+        BottomNavigationView bottomNavigationView;
+        for (int i=0;i<tabAdapter.getCount();i++){
+            bottomNavigationView = (BottomNavigationView)  tabAdapter.getItem(i).getView().findViewById(R.id.bottomNavigationView);
+            bottomNavigationView.setVisibility(View.VISIBLE);
+
+
+        }
+
+
+
+    }
+
+
+    public void hide_menu(){
+        BottomNavigationView bottomNavigationView;
+        for (int i=0;i<tabAdapter.getCount();i++){
+            bottomNavigationView = (BottomNavigationView)  tabAdapter.getItem(i).getView().findViewById(R.id.bottomNavigationView);
+            bottomNavigationView.setVisibility(View.INVISIBLE);
+            viewPager.setPagingEnabled(false);
+        }
+    }
+
+
+    public void update_menu_item(String title){
+        BottomNavigationView bottomNavigationView;
+        for (int i=0;i<tabAdapter.getCount();i++){
+            bottomNavigationView = (BottomNavigationView)  tabAdapter.getItem(i).getView().findViewById(R.id.bottomNavigationView);
+            MenuItem menuItem = bottomNavigationView.getMenu().findItem(R.id.action_locked);
+            menuItem.setTitle(title);
+        }
+    }
+
 
 
 

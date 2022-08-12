@@ -35,7 +35,6 @@ public class ShowFileText extends Fragment {
 
     private String file_name;
     MyScrollView scrollView;
-    boolean isLocked = true;
     double zoom_size=1;
     int initMyImageHeight;
     int initMyImageWidth;
@@ -100,29 +99,12 @@ public class ShowFileText extends Fragment {
         myImage.setOnClickListener(new View.OnClickListener() {
             //@Override
             public void onClick(View v) {
-                if (((ShowFiles) getActivity()).sysMenuOn){
-                    bottomNavigationView.setVisibility(View.VISIBLE);
-                }
+//                if (((ShowFiles) getActivity()).sysMenuOn){
+//                    bottomNavigationView.setVisibility(View.VISIBLE);
+//                }
 
             }
         });
-
-
-
-
-        view.setOnTouchListener(new View.OnTouchListener() {
-            public boolean onTouch(View v, MotionEvent event) {
-
-                if(event.getAction() == MotionEvent.ACTION_MOVE){
-                    //do something
-                }
-                return true;
-            }
-        });
-
-
-
-
 
 
 
@@ -132,12 +114,13 @@ public class ShowFileText extends Fragment {
 
         scrollView = (MyScrollView) view.findViewById(R.id.scrollView);
 
-        scrollView.setScrolling(!isLocked); // to disable scrolling
+        scrollView.setScrolling(!((ShowFiles) getActivity()).isLocked); // to disable scrolling
 
 
 
         bottomNavigationView = (BottomNavigationView) view.findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setVisibility(View.INVISIBLE);
+        hideSystemUI();
 
         tabs = (TabLayout)((ShowFiles)getActivity()).findViewById(R.id.tabLayout);
 
@@ -149,23 +132,28 @@ public class ShowFileText extends Fragment {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if (item.getItemId() == R.id.action_locked) {
-                    if (isLocked){
-                        item.setTitle("נעל");
+                    if (((ShowFiles) getActivity()).isLocked){
+                        //item.setTitle("נעל");
+                        ((ShowFiles) getActivity()).update_menu_item("נעל");
                         scrollView.setScrolling(true); // to enable scrolling.
+                        ((ShowFiles) getActivity()).viewPager.setPagingEnabled(true);
+
                     }
                     else{
-                        item.setTitle("שחרר");
+                        //item.setTitle("שחרר");
+                        ((ShowFiles) getActivity()).update_menu_item("שחרר");
                         scrollView.setScrolling(false);
                         //linearLayout_BottomNavigationView.addView(bottomNavigationView);
                         bottomNavigationView.setVisibility(View.INVISIBLE);
                         hideSystemUI();
-                        ((ShowFiles) getActivity()).sysMenuOn=false;
+                        ((ShowFiles) getActivity()).hide_menu();
+                        //((ShowFiles) getActivity()).show_menu();
                     }
-                    isLocked =!isLocked;
+                    ((ShowFiles) getActivity()).isLocked =!((ShowFiles) getActivity()).isLocked;
 
 
                 }
-                if (!isLocked){
+                if (!((ShowFiles) getActivity()).isLocked){
                     if (item.getItemId() == R.id.action_zoom_in) {
                         if (initMyImageHeight==0){
                             initMyImageHeight=myImage.getHeight();
@@ -347,7 +335,7 @@ public class ShowFileText extends Fragment {
                             // Note that system bars will only be "visible" if none of the
                             // LOW_PROFILE, HIDE_NAVIGATION, or FULLSCREEN flags are set.
                             if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
-                                ((ShowFiles) getActivity()).sysMenuOn=true;
+                                ((ShowFiles) getActivity()).show_menu();
                                 // adjustments to your UI, such as showing the action bar or
                                 // other navigational controls.
                             } else {

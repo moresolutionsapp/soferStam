@@ -40,7 +40,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String parent_id = "parent_id";
     public static final String menu_desc = "menu_desc";
     public static final String child_is_files = "child_is_files";
-    public static final String is_file = "is_files";
+    public static final String is_files = "is_files";
     public static final String page_no = "page_no";
 
 
@@ -51,7 +51,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     + parent_id + " int , "
                     + menu_desc + " text ,"
                     + child_is_files + " int ,"
-                    + is_file + " int ,"
+                    + is_files + " int ,"
                     + page_no + " int " +
                     ");";
 

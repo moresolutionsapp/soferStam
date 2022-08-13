@@ -114,6 +114,19 @@ public class DBManager {
         return cursor;
     }
 
+    public Cursor fetch_menu() {
+        String[] selectionArgs;
+        selectionArgs = new String[] { };
+        String Select = "select *"+
+                " from menu ";
+
+        Cursor cursor = database.rawQuery(Select,selectionArgs);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        return cursor;
+    }
+
     public Cursor fetch_menu_files(int parent) {
         String[] selectionArgs;
         selectionArgs = new String[] { Integer.toString(parent)};
@@ -128,6 +141,8 @@ public class DBManager {
         return cursor;
     }
 
+
+
     public void menu_insert_or_update (int _id,
                                        int parent_id ,
                                        String menu_desc,
@@ -140,7 +155,8 @@ public class DBManager {
         contentValue.put(DatabaseHelper.parent_id, parent_id);
         contentValue.put(DatabaseHelper.menu_desc, menu_desc);
         contentValue.put(DatabaseHelper.child_is_files, child_is_files);
-        contentValue.put(DatabaseHelper.is_file, 0);
+        contentValue.put(DatabaseHelper.is_files, 0);
+        contentValue.put(DatabaseHelper.page_no, 0);
 
 
         if(_id==0 ){
@@ -150,6 +166,31 @@ public class DBManager {
             String[] whereArgs = new String[] {Integer.toString(_id)};
             database.update(DatabaseHelper.menu, contentValue,DatabaseHelper._id + "=?" ,whereArgs);
         }
+
+    }
+
+    public void menu_insert (int _id,
+                                       int parent_id ,
+                                       String menu_desc,
+                                       int child_is_files,
+                                       int is_files,
+                                       int page_no) {
+
+        ContentValues contentValue = new ContentValues();
+
+            contentValue.put(DatabaseHelper._id ,_id);
+
+        contentValue.put(DatabaseHelper.parent_id, parent_id);
+        contentValue.put(DatabaseHelper.menu_desc, menu_desc);
+        contentValue.put(DatabaseHelper.child_is_files, child_is_files);
+        contentValue.put(DatabaseHelper.is_files, 0);
+        contentValue.put(DatabaseHelper.page_no, 0);
+
+
+
+            database.insert(DatabaseHelper.menu, null, contentValue);
+
+
 
     }
 
@@ -213,7 +254,7 @@ public class DBManager {
         }
         contentValue.put(DatabaseHelper.parent_id, parent_id);
         contentValue.put(DatabaseHelper.menu_desc, file_name);
-        contentValue.put(DatabaseHelper.is_file, 1);
+        contentValue.put(DatabaseHelper.is_files, 1);
         contentValue.put(DatabaseHelper.child_is_files, 0);
         contentValue.put(DatabaseHelper.page_no, page_no);
 

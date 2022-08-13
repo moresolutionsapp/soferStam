@@ -210,6 +210,11 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
 
+                if (item.getItemId() == R.id.action_load_menu) {
+                    Intent intent = new Intent(MainActivity.this, CopyMenuCsvToDb.class);
+                    startActivity(intent);
+                }
+
                 if (item.getItemId() == R.id.action_last_file) {
                     DBManager dbManager = new DBManager(MainActivity.this);
                     dbManager.open();

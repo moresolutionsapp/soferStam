@@ -7,8 +7,10 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.documentfile.provider.DocumentFile;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
@@ -77,45 +79,55 @@ public class SaveMenu extends AppCompatActivity {
         chooseDirectoryFilesResultLauncher.launch(intent);
     }
 
+    @SuppressLint("Range")
     private void export_menu_to_csv_file() throws IOException {
 
         Uri treeUri = uri;
         DocumentFile pickedDir = DocumentFile.fromTreeUri(SaveMenu.this, treeUri);
-        DocumentFile documentFile = pickedDir.findFile("Note");
+        DocumentFile documentFile = pickedDir.findFile(file_name);
         if (documentFile == null)
-            documentFile = pickedDir.createFile("text/plain", "Note");
+            documentFile = pickedDir.createFile("application/excel", file_name);
+        else{
+            documentFile.delete();
+            documentFile = pickedDir.createFile("application/excel", file_name);
+        }
 
         OutputStream out = getContentResolver().openOutputStream(documentFile.getUri());
-        //out.write(infos.get(i).getContent().getBytes());
-        String inputString = "Hello World!";
-        byte[] byteArrray = inputString.getBytes();
-        out.write(byteArrray);
+
+        String separator = System.getProperty("line.separator");
+        DBManager dbManager = new DBManager(this);
+        dbManager.open();
+        Cursor cursor = dbManager.fetch_menu();
+        for (int i=0;i< cursor.getCount();++i){
+            cursor.moveToPosition(i);
+            String inputString;
+            byte[] byteArrray;
+            inputString =cursor.getString(cursor.getColumnIndex("_id")) +"~";
+            byteArrray = inputString.getBytes();
+            out.write(byteArrray);
+            inputString =cursor.getString(cursor.getColumnIndex("parent_id")) + "~";
+            byteArrray = inputString.getBytes();
+            out.write(byteArrray);
+            inputString =cursor.getString(cursor.getColumnIndex("menu_desc")) + "~";
+            byteArrray = inputString.getBytes();
+            out.write(byteArrray);
+            inputString =cursor.getString(cursor.getColumnIndex("child_is_files")) + "~";
+            byteArrray = inputString.getBytes();
+            out.write(byteArrray);
+            inputString =cursor.getString(cursor.getColumnIndex("is_files")) + "~";
+            byteArrray = inputString.getBytes();
+            out.write(byteArrray);
+            inputString =cursor.getString(cursor.getColumnIndex("page_no")) ;
+            byteArrray = inputString.getBytes();
+            out.write(byteArrray);
+            byteArrray = separator.getBytes();
+            out.write(byteArrray);
+
+        }
+
         out.flush();
         out.close();
-//        File[] dirs = getExternalFilesDirs(null);
-//        String csvFilePath = dirs[0] + "/" + file_name;
-//        PrintWriter file;
-//
-//        OutputStream os = null;
-//        try {
-//            os = new FileOutputStream(csvFilePath,false);
-//            os.write(239);
-//            os.write(187);
-//            os.write(191);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        file = new PrintWriter(new OutputStreamWriter(os, StandardCharsets.UTF_8));
-//
-//        file.append("col1");
-//        file.append(',');
-//        file.append("col2");
-//        file.append(',');
-//        //write_body();
-//        file.flush();
-//        file.close();
-//        save_file();
+
     }
 
 

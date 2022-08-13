@@ -183,8 +183,8 @@ public class DBManager {
         contentValue.put(DatabaseHelper.parent_id, parent_id);
         contentValue.put(DatabaseHelper.menu_desc, menu_desc);
         contentValue.put(DatabaseHelper.child_is_files, child_is_files);
-        contentValue.put(DatabaseHelper.is_files, 0);
-        contentValue.put(DatabaseHelper.page_no, 0);
+        contentValue.put(DatabaseHelper.is_files, is_files);
+        contentValue.put(DatabaseHelper.page_no, page_no);
 
 
 

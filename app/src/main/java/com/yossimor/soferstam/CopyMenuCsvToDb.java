@@ -2,9 +2,14 @@ package com.yossimor.soferstam;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.itextpdf.text.List;
@@ -43,8 +48,9 @@ public class CopyMenuCsvToDb extends AppCompatActivity {
                             Integer.parseInt(s[5]));
                 }
                 dbManager.close();
-                Toast.makeText(this,"התפריט נטען זה מהאפליקציה וכנס",Toast.LENGTH_LONG);
-                finish();
+                TextView tv = findViewById(R.id.tv);
+                tv.setText("התפריט נטען צא מהאפליקציה וכנס");
+
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }

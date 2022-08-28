@@ -11,7 +11,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Database Information
     static final String DB_NAME = "soferStam.DB";
     // database version
-    static final int DB_VERSION = 24;
+    static final int DB_VERSION = 26;
 
 
 
@@ -88,7 +88,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        //db.execSQL("drop table control");
+        db.execSQL("drop table control");
         //db.execSQL(CREATE_TABLE_menu);
         //db.execSQL(CREATE_TABLE_files_list);
         //db.execSQL(CREATE_TABLE_files_list);

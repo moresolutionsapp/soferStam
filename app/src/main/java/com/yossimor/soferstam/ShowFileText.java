@@ -134,12 +134,14 @@ public class ShowFileText extends Fragment {
                 if (item.getItemId() == R.id.action_locked) {
                     if (((ShowFiles) getActivity()).isLocked){
                         //item.setTitle("נעל");
+                        ((ShowFiles) getActivity()).isLocked =!((ShowFiles) getActivity()).isLocked;
                         ((ShowFiles) getActivity()).update_menu_item("נעל");
                         scrollView.setScrolling(true); // to enable scrolling.
                         ((ShowFiles) getActivity()).viewPager.setPagingEnabled(true);
 
                     }
                     else{
+                        ((ShowFiles) getActivity()).isLocked =!((ShowFiles) getActivity()).isLocked;
                         //item.setTitle("שחרר");
                         ((ShowFiles) getActivity()).update_menu_item("שחרר");
                         scrollView.setScrolling(false);
@@ -147,9 +149,10 @@ public class ShowFileText extends Fragment {
                         bottomNavigationView.setVisibility(View.INVISIBLE);
                         hideSystemUI();
                         ((ShowFiles) getActivity()).hide_menu();
+                        ((ShowFiles) getActivity()).showMenu=false;
                         //((ShowFiles) getActivity()).show_menu();
                     }
-                    ((ShowFiles) getActivity()).isLocked =!((ShowFiles) getActivity()).isLocked;
+
 
 
                 }
@@ -183,9 +186,7 @@ public class ShowFileText extends Fragment {
                             initMyImageHeight=myImage.getHeight();
                             initMyImageWidth=myImage.getWidth();
                         }
-                        zoom_size = zoom_size *0.9;
-//                    myImage.getLayoutParams().height = (int) (myImage.getHeight()*0.9);
-//                    myImage.getLayoutParams().width = (int) (myImage.getWidth()*0.9);
+                        zoom_size = zoom_size /1.1;
                         myImage.getLayoutParams().height = (int) (initMyImageHeight*zoom_size);
                         myImage.getLayoutParams().width = (int) (initMyImageWidth*zoom_size);
                         myImage.requestLayout();
@@ -210,6 +211,7 @@ public class ShowFileText extends Fragment {
                         dbManager.updateZoomSize(zoom_size);
                         dbManager.close();
                     }
+
 
                     if (item.getItemId() == R.id.last_zoom) {
                         if (initMyImageHeight==0){
@@ -293,15 +295,7 @@ public class ShowFileText extends Fragment {
 
 
 
-    @Nullable
-    private ActionBar getSupportActionBar() {
-        ActionBar actionBar = null;
-        if (getActivity() instanceof AppCompatActivity) {
-            AppCompatActivity activity = (AppCompatActivity) getActivity();
-            actionBar = activity.getSupportActionBar();
-        }
-        return actionBar;
-    }
+
 
     @Override
     public void onDestroyView() {
@@ -335,6 +329,7 @@ public class ShowFileText extends Fragment {
                             // Note that system bars will only be "visible" if none of the
                             // LOW_PROFILE, HIDE_NAVIGATION, or FULLSCREEN flags are set.
                             if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
+                                ((ShowFiles) getActivity()).showMenu=true;
                                 ((ShowFiles) getActivity()).show_menu();
                                 // adjustments to your UI, such as showing the action bar or
                                 // other navigational controls.

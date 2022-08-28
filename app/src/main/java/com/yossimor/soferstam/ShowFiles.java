@@ -22,10 +22,12 @@ public class ShowFiles extends AppCompatActivity {
     public TabLayout tabLayout;
     public CustomViewPager viewPager;
     public TabAdapter tabAdapter;
+    public boolean showMenu = false;
     public boolean isLocked = true;
     int p_parent_id = 0;
     String p_last_tab_num ;
     int last_tab;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +53,7 @@ public class ShowFiles extends AppCompatActivity {
         DBManager dbManager = new DBManager(this);
         dbManager.open();
         Cursor cursor = dbManager.fetch_menu_files(p_parent_id);
-        for (int i=0;i<cursor.getCount();i++){
+        for (int i=0;i<cursor.getCount();++i){
             cursor.moveToPosition(i);
             @SuppressLint("Range") String file_name = cursor.getString( cursor.getColumnIndex("menu_desc"));
             Bundle bundle = new Bundle();
@@ -78,6 +80,13 @@ public class ShowFiles extends AppCompatActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                if (showMenu){
+                    show_menu();
+                }
+                else{
+                    hide_menu();
+                }
+                update_menu_item("");
                 DBManager dbManager = new DBManager(ShowFiles.this);
                 dbManager.open();
                 dbManager.updateLastFile(p_parent_id,tabLayout.getSelectedTabPosition());
@@ -102,12 +111,15 @@ public class ShowFiles extends AppCompatActivity {
 
     public void show_menu(){
         BottomNavigationView bottomNavigationView;
-        for (int i=0;i<tabAdapter.getCount();i++){
-            bottomNavigationView = (BottomNavigationView)  tabAdapter.getItem(i).getView().findViewById(R.id.bottomNavigationView);
-            bottomNavigationView.setVisibility(View.VISIBLE);
+        //for (int i=0;i<tabAdapter.getCount()-1;++i){
+        int i = tabLayout.getSelectedTabPosition();
+        bottomNavigationView = (BottomNavigationView)  tabAdapter.getItem(i).getView().findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setVisibility(View.VISIBLE);
 
 
-        }
+
+
+        //}
 
 
 
@@ -116,21 +128,30 @@ public class ShowFiles extends AppCompatActivity {
 
     public void hide_menu(){
         BottomNavigationView bottomNavigationView;
-        for (int i=0;i<tabAdapter.getCount();i++){
+        //for (int i=0;i<tabAdapter.getCount()-1;i++){
+            int i = tabLayout.getSelectedTabPosition();
             bottomNavigationView = (BottomNavigationView)  tabAdapter.getItem(i).getView().findViewById(R.id.bottomNavigationView);
             bottomNavigationView.setVisibility(View.INVISIBLE);
             viewPager.setPagingEnabled(false);
-        }
+        //}
     }
 
 
     public void update_menu_item(String title){
         BottomNavigationView bottomNavigationView;
-        for (int i=0;i<tabAdapter.getCount();i++){
+        String title1;
+        if (!isLocked){
+            title1="נעל";
+        }
+        else{
+            title1="שחרר";
+        }
+        int i = tabLayout.getSelectedTabPosition();
+        //for (int i=0;i<tabAdapter.getCount()-1;i++){
             bottomNavigationView = (BottomNavigationView)  tabAdapter.getItem(i).getView().findViewById(R.id.bottomNavigationView);
             MenuItem menuItem = bottomNavigationView.getMenu().findItem(R.id.action_locked);
-            menuItem.setTitle(title);
-        }
+            menuItem.setTitle(title1);
+        //}
     }
 
 

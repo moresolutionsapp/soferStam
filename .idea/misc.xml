@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/yossi/AndroidStudioProjects/SoferStam/app/src/main/res/drawable/ic_copy_24.xml" value="0.196" />
+        <entry key="..\:/Users/yossi/AndroidStudioProjects/SoferStam/app/src/main/res/font/fonts.xml" value="0.271875" />
         <entry key="..\:/Users/yossi/AndroidStudioProjects/SoferStam/app/src/main/res/layout/activity_copy_files.xml" value="0.18297101449275363" />
         <entry key="..\:/Users/yossi/AndroidStudioProjects/SoferStam/app/src/main/res/layout/activity_copy_menu_csv_to_db.xml" value="0.1" />
         <entry key="..\:/Users/yossi/AndroidStudioProjects/SoferStam/app/src/main/res/layout/activity_edit_menu.xml" value="0.10104166666666667" />
@@ -16,7 +17,7 @@
         <entry key="..\:/Users/yossi/AndroidStudioProjects/SoferStam/app/src/main/res/layout/activity_show_files.xml" value="0.10104166666666667" />
         <entry key="..\:/Users/yossi/AndroidStudioProjects/SoferStam/app/src/main/res/layout/fragment_show_file_text.xml" value="0.18297101449275363" />
         <entry key="..\:/Users/yossi/AndroidStudioProjects/SoferStam/app/src/main/res/layout/fragment_show_file_text2.xml" value="0.1" />
-        <entry key="..\:/Users/yossi/AndroidStudioProjects/SoferStam/app/src/main/res/layout/toolbar.xml" value="0.18297101449275363" />
+        <entry key="..\:/Users/yossi/AndroidStudioProjects/SoferStam/app/src/main/res/layout/toolbar.xml" value="0.1" />
         <entry key="..\:/Users/yossi/AndroidStudioProjects/SoferStam/app/src/main/res/menu/load.xml" value="0.24270833333333333" />
         <entry key="..\:/Users/yossi/AndroidStudioProjects/SoferStam/app/src/main/res/menu/show.xml" value="0.24270833333333333" />
         <entry key="..\:/Users/yossi/AndroidStudioProjects/SoferStam/app/src/main/res/menu/showFileMenu.xml" value="0.24270833333333333" />

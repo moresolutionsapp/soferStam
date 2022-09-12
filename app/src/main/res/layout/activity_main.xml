@@ -32,10 +32,12 @@
             android:layout_marginTop="12dp"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
+            android:fontFamily="@font/guttmankeren"
             android:background="@drawable/search_edittext"
             android:drawableStart="@drawable/ic_search"
             android:inputType="text"
             android:ems="10"
+            android:textSize="22sp"
             android:focusable="true"
             android:hint="חפש"
             android:gravity="center"
@@ -62,12 +64,7 @@
                 />
 
 
-            <View
-                android:id="@+id/divider_header"
-                android:layout_height="1dp"
-                android:layout_width="match_parent"
-                android:background="@android:color/darker_gray"
-                />
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/my_recycler_view"
@@ -75,11 +72,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 />
-            <View
-                android:id="@+id/divider_bottom"
-                android:layout_height="1dp"
-                android:layout_width="match_parent"
-                android:background="@android:color/black"/>
+
         </LinearLayout>
 
 
@@ -126,7 +119,7 @@
             app:labelVisibilityMode="labeled"
             app:menu="@menu/load"
             android:layout_gravity="bottom"
-            android:background="@color/white"
+            android:background="@color/light_gray"
             app:showAsAction="withText"
             app:itemTextColor="@color/black"
             app:itemIconTint="@color/black" />

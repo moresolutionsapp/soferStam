@@ -3,6 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/grey"
+    android:backgroundTint="@color/grey"
     app:cardElevation="10dp"
     app:cardCornerRadius="10dp"
     android:layout_margin="10dp"
@@ -38,9 +40,11 @@
             android:id="@+id/menu_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:fontFamily="@font/guttmankeren"
             android:padding="10dp"
             android:layout_weight="70"
-            android:textSize="@dimen/select_listview_Textsize"/>
+            android:textSize="22sp"/>
 
     <TextView
         android:id="@+id/child_is_files"

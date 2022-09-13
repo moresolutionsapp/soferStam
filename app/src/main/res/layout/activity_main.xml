@@ -32,14 +32,14 @@
             android:layout_marginTop="12dp"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
-            android:fontFamily="@font/guttmankeren"
+            android:fontFamily="@font/stam"
             android:background="@drawable/search_edittext"
             android:drawableStart="@drawable/ic_search"
             android:inputType="text"
             android:ems="10"
-            android:textSize="22sp"
+            android:textSize="25sp"
             android:focusable="true"
-            android:hint="חפש"
+            android:hint="חפש  "
             android:gravity="center"
             android:importantForAutofill="no"/>
 

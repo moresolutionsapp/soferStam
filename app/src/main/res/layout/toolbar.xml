@@ -72,7 +72,7 @@
             android:textColor="@color/white"
             android:textSize="30sp"
             style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-            android:fontFamily="@font/guttmankeren"
+            android:fontFamily="@font/stam"
             android:text="title"
             android:layout_gravity="center" />
         </LinearLayout>

@@ -26,6 +26,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         FloatingActionButton floatingActionButton = findViewById(R.id.floatingAddButton);
         Toolbar toolbar = findViewById(R.id.my_toolbar);
         TextView mTitle = toolbar.findViewById(R.id.toolbar_title);
+        ImageView logo =  toolbar.findViewById(R.id.logo);
         checkBox = toolbar.findViewById(R.id.checkbox);
 
         Handler timerHandler = new Handler();
@@ -124,13 +126,16 @@ public class MainActivity extends AppCompatActivity {
 
         Bundle b = getIntent().getExtras();
         if (b != null) {
-            if (b.getString("parent_id")!=null){
+            if (b.getString("parent_id")!=null) {
                 p_parent_id = Integer.parseInt(b.getString("parent_id"));
             }
             p_menuDesc = b.getString("menu_desc");
             child_is_files = b.getBoolean("child_is_files");
             checkBox.setChecked(b.getBoolean("checkBox"));
 
+        }
+        else{
+            logo.setVisibility(View.VISIBLE);
         }
 
 
@@ -339,39 +344,43 @@ public class MainActivity extends AppCompatActivity {
             @SuppressLint("Range")
             @Override
             public void onLongClicked(int position,View view) {
-                Bundle b = new Bundle();
-                TextView tv ;
-                cursor.moveToPosition(position);
-                @SuppressLint("Range")
-                int is_files = cursor.getInt( cursor.getColumnIndex("is_files"));
-                if (is_files==1){
-                    tv = view.findViewById( R.id._id);
-                    b.putString("file_id",  tv.getText().toString());
-                    tv = view.findViewById( R.id.menu_desc);
-                    b.putString("file_name",  tv.getText().toString());
-                    tv = view.findViewById( R.id.parent_id);
-                    b.putString("parent_id",  tv.getText().toString());
-                    b.putBoolean("child_is_files",  true);                  Intent intent;
-                    @SuppressLint("Range") int page_no = cursor.getInt( cursor.getColumnIndex("page_no"));
-                    b.putInt("page_no",  page_no);
-                    intent = new Intent(MainActivity.this, LoadFile.class);
-                    intent.putExtras(b);
-                    editMenuActivityResultLauncher.launch(intent);
-                }
-                else{
-                    tv = view.findViewById( R.id._id);
-                    b.putString("menu_id",  tv.getText().toString());
-                    tv = view.findViewById( R.id.menu_desc);
-                    b.putString("menu_desc",  tv.getText().toString());
-                    tv = view.findViewById( R.id.parent_id);
-                    b.putString("parent_id",  tv.getText().toString());
-                    b.putInt("child_is_files",cursor.getInt( cursor.getColumnIndex("child_is_files")));
-                    Intent intent;
-                    intent = new Intent(MainActivity.this, EditMenu.class);
-                    intent.putExtras(b);
-                    editMenuActivityResultLauncher.launch(intent);
-                }
+                if (checkBox.isChecked()) {
 
+
+                    Bundle b = new Bundle();
+                    TextView tv;
+                    cursor.moveToPosition(position);
+                    @SuppressLint("Range")
+                    int is_files = cursor.getInt(cursor.getColumnIndex("is_files"));
+                    if (is_files == 1) {
+                        tv = view.findViewById(R.id._id);
+                        b.putString("file_id", tv.getText().toString());
+                        tv = view.findViewById(R.id.menu_desc);
+                        b.putString("file_name", tv.getText().toString());
+                        tv = view.findViewById(R.id.parent_id);
+                        b.putString("parent_id", tv.getText().toString());
+                        b.putBoolean("child_is_files", true);
+                        Intent intent;
+                        @SuppressLint("Range") int page_no = cursor.getInt(cursor.getColumnIndex("page_no"));
+                        b.putInt("page_no", page_no);
+                        intent = new Intent(MainActivity.this, LoadFile.class);
+                        intent.putExtras(b);
+                        editMenuActivityResultLauncher.launch(intent);
+                    } else {
+                        tv = view.findViewById(R.id._id);
+                        b.putString("menu_id", tv.getText().toString());
+                        tv = view.findViewById(R.id.menu_desc);
+                        b.putString("menu_desc", tv.getText().toString());
+                        tv = view.findViewById(R.id.parent_id);
+                        b.putString("parent_id", tv.getText().toString());
+                        b.putInt("child_is_files", cursor.getInt(cursor.getColumnIndex("child_is_files")));
+                        Intent intent;
+                        intent = new Intent(MainActivity.this, EditMenu.class);
+                        intent.putExtras(b);
+                        editMenuActivityResultLauncher.launch(intent);
+                    }
+
+                }
             }
 
 

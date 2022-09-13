@@ -133,5 +133,10 @@
         <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>
     </style>
 
+    <style name="Menu_Style_TextView">
+        <item name="android:textSize">12sp</item>
+        <item name="fontFamily">@font/stam</item>
+    </style>
+
 
 </resources>

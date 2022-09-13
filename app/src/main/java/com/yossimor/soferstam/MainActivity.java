@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else{
             getSupportActionBar().setDisplayHomeAsUpEnabled(true); // enable the back button
-            mTitle.setText(p_menuDesc);
+            mTitle.setText(p_menuDesc.trim());
             checkBox.setVisibility(View.INVISIBLE);
         }
         getSupportActionBar().setDisplayShowTitleEnabled(false);

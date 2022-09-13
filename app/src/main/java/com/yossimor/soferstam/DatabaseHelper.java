@@ -21,11 +21,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String last_parent_id = "last_parent_id";
     public static final String last_tab_num = "last_tab_num";
     public static final String zoom_size = "zoom_size";
+    public static final String image_size = "image_size";
     // Creating table query
     private static final String CREATE_TABLE_control =
             "create table IF NOT EXISTS " + control +
                     "(" + last_parent_id + " int , "
                     + last_tab_num + " int ,"
+                    + image_size + " int ,"
                     + zoom_size + " numeric(4,9) " +
                     ");";
 
@@ -50,7 +52,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "(" + _id + " INTEGER PRIMARY KEY AUTOINCREMENT , "
                     + parent_id + " int , "
                     + menu_desc + " text ,"
-                    + child_is_files + " int ,"
+                    + child_is_files + " int DEFAULT 1 ,"
                     + is_files + " int ,"
                     + page_no + " int " +
                     ");";

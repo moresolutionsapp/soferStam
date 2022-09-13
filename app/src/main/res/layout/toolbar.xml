@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:fitsSystemWindows="true"
     android:weightSum="100">
 
 
@@ -20,9 +19,42 @@
         android:theme="?attr/actionBarTheme"
         android:backgroundTint="@color/black"
         tools:layout_editor_absoluteX="1dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         android:fitsSystemWindows="true">
+
+
+
+
+
+
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:orientation="horizontal"
+            android:layout_gravity="center">
+
+
+            <ImageView
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:src="@drawable/logo"
+                android:contentDescription="image">
+            </ImageView>
+
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/black"
+            android:textColor="@color/white"
+            android:textSize="40sp"
+            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+            android:fontFamily="@font/stam"
+            android:text="title"
+            android:layout_gravity="center" />
+        </LinearLayout>
 
 
         <LinearLayout
@@ -36,6 +68,7 @@
             <CheckBox
                 android:id="@+id/checkbox"
                 android:checked="false"
+                android:background="@color/white"
                 android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
@@ -53,35 +86,6 @@
 
         </LinearLayout>
 
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:orientation="horizontal"
-            android:layout_gravity="center">
-
-
-
-
-
-        <TextView
-            android:id="@+id/toolbar_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/black"
-            android:textColor="@color/white"
-            android:textSize="30sp"
-            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-            android:fontFamily="@font/stam"
-            android:text="title"
-            android:layout_gravity="center" />
-        </LinearLayout>
-
-        <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:src="@drawable/logo">
-        </ImageView>
 
     </androidx.appcompat.widget.Toolbar>
 

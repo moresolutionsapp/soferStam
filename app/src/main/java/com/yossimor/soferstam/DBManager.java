@@ -42,6 +42,17 @@ public class DBManager {
         contentValue.put(DatabaseHelper.last_parent_id ,0);
         contentValue.put(DatabaseHelper.last_tab_num ,0);
         contentValue.put(DatabaseHelper.zoom_size, 1);
+        contentValue.put(DatabaseHelper.image_size, 1);
+        database.insert(DatabaseHelper.control, null, contentValue);
+
+    }
+
+    public void insertImageSize() {
+        ContentValues contentValue = new ContentValues();
+        contentValue.put(DatabaseHelper.last_parent_id ,0);
+        contentValue.put(DatabaseHelper.last_tab_num ,0);
+        contentValue.put(DatabaseHelper.zoom_size, 1);
+        contentValue.put(DatabaseHelper.image_size, 1);
         database.insert(DatabaseHelper.control, null, contentValue);
 
     }

@@ -7,9 +7,19 @@
             android:id="@+id/action_last_file"
             android:enabled="true"
             android:title="המשך עבודה"
+            android:checked="false"
             app:showAsAction="always"
             android:visible="true"
             android:icon="@drawable/ic_last_page_24"/>
+
+        <item
+            android:id="@+id/action_image_size"
+            android:enabled="true"
+            android:title="גודל טקסט (1)"
+            app:showAsAction="always"
+            android:checked="false"
+            android:visible="true"
+            android:icon="@drawable/ic_text_size_24"/>
 
 
         <item

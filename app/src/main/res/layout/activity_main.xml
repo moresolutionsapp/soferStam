@@ -120,7 +120,7 @@
             app:labelVisibilityMode="labeled"
             app:itemTextAppearanceInactive="@style/Menu_Style_TextView"
             app:itemTextAppearanceActive="@style/Menu_Style_TextView"
-            app:menu="@menu/load"
+            app:menu="@menu/setting"
             android:layout_gravity="bottom"
             android:background="@color/light_gray"
             app:showAsAction="withText"

@@ -1,4 +1,4 @@
-package com.yossimor.soferstam;;
+package com.yossimor.soferstam;
 
 
 
@@ -11,7 +11,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Database Information
     static final String DB_NAME = "soferStam.DB";
     // database version
-    static final int DB_VERSION = 26;
+    static final int DB_VERSION = 27;
 
 
 

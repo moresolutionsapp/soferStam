@@ -235,6 +235,15 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     if (item.getItemId() == R.id.action_image_size) {
+                        Bundle b = new Bundle();
+                        b.putString("parent_id",  "-1");
+                        b.putString("menu_desc",  "גודל טקסט");
+                        b.putBoolean("child_is_files",  false);
+                        b.putBoolean("checkBox", checkBox.isChecked());
+                        Intent intent;
+                        intent = new Intent(MainActivity.this, MainActivity.class);
+                        intent.putExtras(b);
+                        editMenuActivityResultLauncher.launch(intent);
 
                     }
 
@@ -255,8 +264,10 @@ public class MainActivity extends AppCompatActivity {
 
         dbManager = new DBManager(this);
         dbManager.open();
-
-
+        dbManager.control_rec_exist();
+        int imageSize =dbManager.get_ImageSize();
+        MenuItem menuItem = bottomNavigationView.getMenu().findItem(R.id.action_image_size);
+        menuItem.setTitle("גודל טקסט ("+ (imageSize) + ")");
         load_recs("");
 
 
@@ -298,6 +309,7 @@ public class MainActivity extends AppCompatActivity {
         //dbManager.delete();
         RecyclerView.Adapter mAdapter;
         mAdapter = new MainActivityAdpater(cursor, new ClickListener() {
+            @SuppressLint("Range")
             @Override
             public void onPositionClicked(int position,View view) {
                 Bundle b = new Bundle();
@@ -325,18 +337,43 @@ public class MainActivity extends AppCompatActivity {
                             intent = new Intent(MainActivity.this, MainActivity.class);
                             intent.putExtras(b);
                             editMenuActivityResultLauncher.launch(intent);
+
+
+
                         }
                     else{
-                        TextView tv = view.findViewById( R.id._id);
-                        b.putString("parent_id",  tv.getText().toString());
-                        tv = view.findViewById( R.id.menu_desc);
-                        b.putString("menu_desc",  tv.getText().toString());
-                        b.putBoolean("child_is_files",  false);
-                        b.putBoolean("checkBox", checkBox.isChecked());
-                        Intent intent;
-                        intent = new Intent(MainActivity.this, MainActivity.class);
-                        intent.putExtras(b);
-                        editMenuActivityResultLauncher.launch(intent);
+                        //select image size
+                        if (p_parent_id==-1){
+                            TextView tv = view.findViewById( R.id._id);
+                            int current_id = Integer.parseInt(tv.getText().toString());
+                            for (int i=0;i<cursor.getCount();++i){
+                                cursor.moveToPosition(i);
+                                if (current_id==cursor.getInt(cursor.getColumnIndex("_id"))){
+                                    DBManager dbManager2 = new DBManager(MainActivity.this);
+                                    dbManager2.open();
+                                    dbManager2.updateImageSize(i+1);
+                                    dbManager2.close();
+                                    MenuItem menuItem = bottomNavigationView.getMenu().findItem(R.id.action_image_size);
+                                    menuItem.setTitle("גודל טקסט ("+ (i+1) + ")"
+                                    );
+
+                                }
+                            }
+
+                        }
+                        else{ // regular menu
+                            TextView tv = view.findViewById( R.id._id);
+                            b.putString("parent_id",  tv.getText().toString());
+                            tv = view.findViewById( R.id.menu_desc);
+                            b.putString("menu_desc",  tv.getText().toString());
+                            b.putBoolean("child_is_files",  false);
+                            b.putBoolean("checkBox", checkBox.isChecked());
+                            Intent intent;
+                            intent = new Intent(MainActivity.this, MainActivity.class);
+                            intent.putExtras(b);
+                            editMenuActivityResultLauncher.launch(intent);
+                        }
+
                     }
 
                 }

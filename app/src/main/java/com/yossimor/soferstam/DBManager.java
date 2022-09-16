@@ -47,17 +47,9 @@ public class DBManager {
 
     }
 
-    public void insertImageSize() {
-        ContentValues contentValue = new ContentValues();
-        contentValue.put(DatabaseHelper.last_parent_id ,0);
-        contentValue.put(DatabaseHelper.last_tab_num ,0);
-        contentValue.put(DatabaseHelper.zoom_size, 1);
-        contentValue.put(DatabaseHelper.image_size, 1);
-        database.insert(DatabaseHelper.control, null, contentValue);
 
-    }
 
-    private void control_rec_exist(){
+    public void control_rec_exist(){
         String Select = "SELECT count(*)  from control ;";
         String[] selectionArgs;
         selectionArgs = new String[] {};
@@ -73,6 +65,25 @@ public class DBManager {
         ContentValues contentValue = new ContentValues();
         contentValue.put(DatabaseHelper.zoom_size, zoom_size);
         database.update(DatabaseHelper.control, contentValue, null , null);
+
+    }
+
+    public void updateImageSize (double image_size) {
+        control_rec_exist();
+        ContentValues contentValue = new ContentValues();
+        contentValue.put(DatabaseHelper.image_size, image_size);
+        database.update(DatabaseHelper.control, contentValue, null , null);
+
+    }
+
+    public int get_ImageSize(){
+        control_rec_exist();
+        String Select = "SELECT image_size  from control ;";
+        String[] selectionArgs;
+        selectionArgs = new String[] {};
+        @SuppressLint("Recycle") Cursor cursor = database.rawQuery(Select,selectionArgs);
+        cursor.moveToFirst();
+        return  cursor.getInt(0);
 
     }
 

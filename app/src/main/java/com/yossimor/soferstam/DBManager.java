@@ -43,6 +43,7 @@ public class DBManager {
         contentValue.put(DatabaseHelper.last_tab_num ,0);
         contentValue.put(DatabaseHelper.zoom_size, 1);
         contentValue.put(DatabaseHelper.image_size, 1);
+        contentValue.put(DatabaseHelper.screen_size, 1);
         database.insert(DatabaseHelper.control, null, contentValue);
 
     }
@@ -86,6 +87,27 @@ public class DBManager {
         return  cursor.getInt(0);
 
     }
+
+    public void updateScreenSize (double screen_size) {
+        control_rec_exist();
+        ContentValues contentValue = new ContentValues();
+        contentValue.put(DatabaseHelper.screen_size, screen_size);
+        database.update(DatabaseHelper.control, contentValue, null , null);
+
+    }
+
+    public double get_ScreenSize(){
+        control_rec_exist();
+        String Select = "SELECT screen_size  from control ;";
+        String[] selectionArgs;
+        selectionArgs = new String[] {};
+        @SuppressLint("Recycle") Cursor cursor = database.rawQuery(Select,selectionArgs);
+        cursor.moveToFirst();
+        return  cursor.getInt(0);
+
+    }
+
+
 
     public double get_last_zoom_size(){
         control_rec_exist();

@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     Cursor cursor;
     int click_counter =0;
     boolean timerStart;
+    double screen_size;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,6 +153,12 @@ public class MainActivity extends AppCompatActivity {
                             Intent data = result.getData();
                             //int tt = data.getIntExtra("detect_result", 99);
                             load_recs(etSearchbox.getText());
+                            if (!checkBox.isChecked()){
+                                dbManager.control_rec_exist();
+                                int imageSize =dbManager.get_ImageSize();
+                                MenuItem menuItem = bottomNavigationView.getMenu().findItem(R.id.action_image_size);
+                                menuItem.setTitle("גודל טקסט ("+ (imageSize) + ")");
+                            }
 
                         }
                     }
@@ -262,12 +269,33 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+
         dbManager = new DBManager(this);
         dbManager.open();
-        dbManager.control_rec_exist();
-        int imageSize =dbManager.get_ImageSize();
-        MenuItem menuItem = bottomNavigationView.getMenu().findItem(R.id.action_image_size);
-        menuItem.setTitle("גודל טקסט ("+ (imageSize) + ")");
+        if (!checkBox.isChecked()){
+            dbManager.control_rec_exist();
+            int imageSize =dbManager.get_ImageSize();
+            MenuItem menuItem = bottomNavigationView.getMenu().findItem(R.id.action_image_size);
+            menuItem.setTitle("גודל טקסט ("+ (imageSize) + ")");
+            menuItem = bottomNavigationView.getMenu().findItem(R.id.action_screen_size);
+            screen_size = dbManager.get_ScreenSize();
+            if (screen_size==1){
+                menuItem.setTitle("גודל מסך ("+ "מלא" + ")");
+            }
+            if (screen_size==0.5){
+                menuItem.setTitle("גודל מסך ("+ "חצי" + ")");
+            }
+            if (screen_size==0.33){
+                menuItem.setTitle("גודל מסך ("+ "שליש" + ")");
+            }
+            if (screen_size==0.25){
+                menuItem.setTitle("גודל מסך ("+ "רבע" + ")");
+            }
+
+
+
+        }
+
         load_recs("");
 
 
@@ -354,8 +382,10 @@ public class MainActivity extends AppCompatActivity {
                                     dbManager2.updateImageSize(i+1);
                                     dbManager2.close();
                                     MenuItem menuItem = bottomNavigationView.getMenu().findItem(R.id.action_image_size);
-                                    menuItem.setTitle("גודל טקסט ("+ (i+1) + ")"
-                                    );
+                                    menuItem.setTitle("גודל טקסט ("+ (i+1) + ")");
+                                    Intent returnIntent = new Intent();
+                                    setResult(Activity.RESULT_OK,returnIntent);
+                                    finish();
 
                                 }
                             }

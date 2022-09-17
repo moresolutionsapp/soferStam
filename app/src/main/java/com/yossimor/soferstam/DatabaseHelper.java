@@ -11,7 +11,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Database Information
     static final String DB_NAME = "soferStam.DB";
     // database version
-    static final int DB_VERSION = 27;
+    static final int DB_VERSION = 28;
 
 
 
@@ -22,12 +22,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String last_tab_num = "last_tab_num";
     public static final String zoom_size = "zoom_size";
     public static final String image_size = "image_size";
+    public static final String screen_size = "screen_size";
     // Creating table query
     private static final String CREATE_TABLE_control =
             "create table IF NOT EXISTS " + control +
                     "(" + last_parent_id + " int , "
                     + last_tab_num + " int ,"
                     + image_size + " int ,"
+                    + screen_size + " numeric(1,2) ,"
                     + zoom_size + " numeric(4,9) " +
                     ");";
 

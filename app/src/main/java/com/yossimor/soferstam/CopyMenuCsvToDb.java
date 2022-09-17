@@ -66,6 +66,10 @@ public class CopyMenuCsvToDb extends AppCompatActivity {
         File[] dirs = getExternalFilesDirs(null);
         String csvFilePath = dirs[0] + "/html/save_menu.csv" ;
         File file = new File(csvFilePath);
+        if (!file.exists()){
+            TextView tv = findViewById(R.id.tv);
+            tv.setText("קובץ תפריטים לא קיים , בצע העתק קבצים");
+        }
         InputStream inputStream = new FileInputStream(file);
         ArrayList<String[]> resultList = new ArrayList<>();
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));

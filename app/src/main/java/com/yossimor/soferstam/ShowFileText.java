@@ -89,8 +89,20 @@ public class ShowFileText extends Fragment {
 
 
 
+
         File[] dirs = ((AppCompatActivity)getActivity()).getExternalFilesDirs(null);
         String htmlPath = dirs[0] + "/html/" + file_name;
+        DBManager dbManager = new DBManager(getActivity());
+        dbManager.open();
+        int image_size = dbManager.get_ImageSize();
+        if (image_size>1){
+            String htmlPathDeep = dirs[0] + "/html/" + image_size + "/" + file_name;
+            File file = new File(htmlPathDeep);
+            if (file.exists()){
+                htmlPath = htmlPathDeep;
+            }
+        }
+        dbManager.close();
 
         File file = new File(htmlPath);
 

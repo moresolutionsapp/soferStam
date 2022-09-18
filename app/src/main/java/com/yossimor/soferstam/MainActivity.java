@@ -277,20 +277,20 @@ public class MainActivity extends AppCompatActivity {
             int imageSize =dbManager.get_ImageSize();
             MenuItem menuItem = bottomNavigationView.getMenu().findItem(R.id.action_image_size);
             menuItem.setTitle("גודל טקסט ("+ (imageSize) + ")");
-            menuItem = bottomNavigationView.getMenu().findItem(R.id.action_screen_size);
-            screen_size = dbManager.get_ScreenSize();
-            if (screen_size==1){
-                menuItem.setTitle("גודל מסך ("+ "מלא" + ")");
-            }
-            if (screen_size==0.5){
-                menuItem.setTitle("גודל מסך ("+ "חצי" + ")");
-            }
-            if (screen_size==0.33){
-                menuItem.setTitle("גודל מסך ("+ "שליש" + ")");
-            }
-            if (screen_size==0.25){
-                menuItem.setTitle("גודל מסך ("+ "רבע" + ")");
-            }
+//            menuItem = bottomNavigationView.getMenu().findItem(R.id.action_screen_size);
+//            screen_size = dbManager.get_ScreenSize();
+//            if (screen_size==1){
+//                menuItem.setTitle("גודל מסך ("+ "מלא" + ")");
+//            }
+//            if (screen_size==0.5){
+//                menuItem.setTitle("גודל מסך ("+ "חצי" + ")");
+//            }
+//            if (screen_size==0.33){
+//                menuItem.setTitle("גודל מסך ("+ "שליש" + ")");
+//            }
+//            if (screen_size==0.25){
+//                menuItem.setTitle("גודל מסך ("+ "רבע" + ")");
+//            }
 
 
 

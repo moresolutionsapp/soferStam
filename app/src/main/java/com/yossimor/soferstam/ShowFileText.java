@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -31,16 +32,20 @@ import java.io.File;
 
 
 
-public class ShowFileText extends Fragment {
+public class ShowFileText extends Fragment implements PercentageDialog.ISelectedData {
 
     private String file_name;
     MyScrollView scrollView;
     double zoom_size=1;
+    ImageView myImage;
     int initMyImageHeight;
     int initMyImageWidth;
     BottomNavigationView bottomNavigationView;
     private TabLayout tabs;
     private boolean  sysMenuVisible;
+    int click_counter =0;
+    boolean timerStart;
+    int percentage = 100;
 
 
 
@@ -106,17 +111,36 @@ public class ShowFileText extends Fragment {
 
         File file = new File(htmlPath);
 
-        ImageView myImage = (ImageView) view.findViewById(R.id.image_text);
+        Handler timerHandler = new Handler();
+        Runnable timerRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if (click_counter>=5){
+                    if (((ShowFiles) getActivity()).isLocked){
+                        //item.setTitle("נעל");
+                        showSystemUI();
+                    }
+                }
+                click_counter=0;
+                timerStart=false;
+            }
+        };
+
+        myImage = (ImageView) view.findViewById(R.id.image_text);
         myImage.setImageURI(Uri.fromFile(file));
         myImage.setOnClickListener(new View.OnClickListener() {
-            //@Override
+            @Override
             public void onClick(View v) {
-//                if (((ShowFiles) getActivity()).sysMenuOn){
-//                    bottomNavigationView.setVisibility(View.VISIBLE);
-//                }
+                 if (!timerStart && ((ShowFiles) getActivity()).isLocked){
+                    timerStart=true;
+                    timerHandler.postDelayed(timerRunnable,1000);
+                }
+                click_counter++;
 
             }
         });
+
+
 
 
 
@@ -175,7 +199,7 @@ public class ShowFileText extends Fragment {
                             initMyImageWidth=myImage.getWidth();
                         }
 
-                        zoom_size = zoom_size *1.1;
+                        zoom_size =zoom_size+0.05;
 
 //                    myImage.getLayoutParams().height = (int) (myImage.getHeight()*1.1);
 //                    myImage.getLayoutParams().width = (int) (myImage.getWidth()*1.1);
@@ -198,7 +222,7 @@ public class ShowFileText extends Fragment {
                             initMyImageHeight=myImage.getHeight();
                             initMyImageWidth=myImage.getWidth();
                         }
-                        zoom_size = zoom_size /1.1;
+                        zoom_size = (zoom_size-0.05);
                         myImage.getLayoutParams().height = (int) (initMyImageHeight*zoom_size);
                         myImage.getLayoutParams().width = (int) (initMyImageWidth*zoom_size);
                         myImage.requestLayout();
@@ -209,19 +233,11 @@ public class ShowFileText extends Fragment {
 
                     }
 
-                    if (item.getItemId() == R.id.reset_zoom) {
-                        zoom_size=1;
-                        if (initMyImageHeight==0){
-                            initMyImageHeight=myImage.getHeight();
-                            initMyImageWidth=myImage.getWidth();
-                        }
-                        myImage.getLayoutParams().height = (int) (initMyImageHeight);
-                        myImage.getLayoutParams().width = (int) (initMyImageWidth);
-                        myImage.requestLayout();
-                        DBManager dbManager = new DBManager(getActivity());
-                        dbManager.open();
-                        dbManager.updateZoomSize(zoom_size);
-                        dbManager.close();
+                    if (item.getItemId() == R.id.percentage) {
+                        PercentageDialog percentageDialog = new PercentageDialog((zoom_size)*100);
+                        percentageDialog.setTargetFragment(ShowFileText.this, 1);
+                        percentageDialog.show(getActivity().getSupportFragmentManager(),"percentage");
+
                     }
 
 
@@ -315,6 +331,15 @@ public class ShowFileText extends Fragment {
         binding = null;
     }
 
+    private void showSystemUI() {
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        View decorView = activity.getWindow().getDecorView();
+        decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+    }
+
     private void hideSystemUI() {
         // Enables regular immersive mode.
         // For "lean back" mode, remove SYSTEM_UI_FLAG_IMMERSIVE.
@@ -362,7 +387,24 @@ public class ShowFileText extends Fragment {
     }
 
 
-
-
-
+    @Override
+    public void onSelectedData(Bundle bundle) {
+        int mPercentage  = bundle.getInt("percentage",0);
+        boolean change =  bundle.getBoolean("change");
+        if (change){
+            percentage=mPercentage;
+            zoom_size=(double) percentage/100;
+            if (initMyImageHeight==0){
+                initMyImageHeight=myImage.getHeight();
+                initMyImageWidth=myImage.getWidth();
+            }
+            myImage.getLayoutParams().height = (int) (initMyImageHeight*zoom_size);
+            myImage.getLayoutParams().width = (int) (initMyImageWidth*zoom_size);
+            myImage.requestLayout();
+            DBManager dbManager = new DBManager(getActivity());
+            dbManager.open();
+            dbManager.updateZoomSize(zoom_size);
+            dbManager.close();
+        }
+    }
 }

@@ -28,6 +28,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -66,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         Runnable timerRunnable = new Runnable() {
             @Override
             public void run() {
-                if (click_counter>=7){
+                if (click_counter>=20){
                     checkBox.setVisibility(View.VISIBLE);
                     checkBox.setChecked(true);
                 }
@@ -81,11 +82,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (!timerStart && !checkBox.isChecked()){
                     timerStart=true;
-                    timerHandler.postDelayed(timerRunnable,1500);
+                    timerHandler.postDelayed(timerRunnable,4000);
                 }
                 click_counter++;
-
-
+                Toast.makeText(MainActivity.this, String.valueOf(click_counter), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
                                 dbManager.control_rec_exist();
                                 int imageSize =dbManager.get_ImageSize();
                                 MenuItem menuItem = bottomNavigationView.getMenu().findItem(R.id.action_image_size);
-                                menuItem.setTitle("גודל טקסט ("+ (imageSize) + ")");
+                                menuItem.setTitle("גודל עמודה ("+ (imageSize) + ")");
                             }
 
                         }
@@ -244,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
                     if (item.getItemId() == R.id.action_image_size) {
                         Bundle b = new Bundle();
                         b.putString("parent_id",  "-1");
-                        b.putString("menu_desc",  "גודל טקסט");
+                        b.putString("menu_desc",  "גודל עמודה");
                         b.putBoolean("child_is_files",  false);
                         b.putBoolean("checkBox", checkBox.isChecked());
                         Intent intent;
@@ -276,7 +276,7 @@ public class MainActivity extends AppCompatActivity {
             dbManager.control_rec_exist();
             int imageSize =dbManager.get_ImageSize();
             MenuItem menuItem = bottomNavigationView.getMenu().findItem(R.id.action_image_size);
-            menuItem.setTitle("גודל טקסט ("+ (imageSize) + ")");
+            menuItem.setTitle("גודל עמודה ("+ (imageSize) + ")");
 //            menuItem = bottomNavigationView.getMenu().findItem(R.id.action_screen_size);
 //            screen_size = dbManager.get_ScreenSize();
 //            if (screen_size==1){
@@ -382,7 +382,7 @@ public class MainActivity extends AppCompatActivity {
                                     dbManager2.updateImageSize(i+1);
                                     dbManager2.close();
                                     MenuItem menuItem = bottomNavigationView.getMenu().findItem(R.id.action_image_size);
-                                    menuItem.setTitle("גודל טקסט ("+ (i+1) + ")");
+                                    menuItem.setTitle("גודל עמודה ("+ (i+1) + ")");
                                     Intent returnIntent = new Intent();
                                     setResult(Activity.RESULT_OK,returnIntent);
                                     finish();

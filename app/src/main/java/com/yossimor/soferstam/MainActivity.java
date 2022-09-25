@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
                     timerHandler.postDelayed(timerRunnable,4000);
                 }
                 click_counter++;
-                Toast.makeText(MainActivity.this, String.valueOf(click_counter), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, String.valueOf(click_counter), Toast.LENGTH_SHORT).show();
             }
         });
 

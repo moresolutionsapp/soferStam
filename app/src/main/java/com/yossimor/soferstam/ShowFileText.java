@@ -29,7 +29,8 @@ import com.google.android.material.tabs.TabLayout;
 import com.yossimor.soferstam.databinding.FragmentShowFileTextBinding;
 
 import java.io.File;
-
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 
 public class ShowFileText extends Fragment implements PercentageDialog.ISelectedData {
@@ -118,7 +119,9 @@ public class ShowFileText extends Fragment implements PercentageDialog.ISelected
                 if (click_counter>=5){
                     if (((ShowFiles) getActivity()).isLocked){
                         //item.setTitle("נעל");
-                        showSystemUI();
+                        //showSystemUI();
+                        ((ShowFiles) getActivity()).showMenu=true;
+                        ((ShowFiles) getActivity()).show_menu();
                     }
                 }
                 click_counter=0;
@@ -223,6 +226,7 @@ public class ShowFileText extends Fragment implements PercentageDialog.ISelected
                             initMyImageWidth=myImage.getWidth();
                         }
                         zoom_size = (zoom_size-0.05);
+                        zoom_size = new BigDecimal(zoom_size).setScale(2, RoundingMode.HALF_UP).doubleValue();
                         myImage.getLayoutParams().height = (int) (initMyImageHeight*zoom_size);
                         myImage.getLayoutParams().width = (int) (initMyImageWidth*zoom_size);
                         myImage.requestLayout();
